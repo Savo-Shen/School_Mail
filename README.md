@@ -44,9 +44,7 @@ Shark：美化组件
 Shark: 完成了关于我们、团日活动的文档撰写
 
 #### 其他：
-[ruannan](https://blog.csdn.net/m0_64180167/): 提供服务器支持
 
 ### <div align="center">友情链接</div>
 - [IDEC计科官网](http://89.213.3.106)
 - [Savo的网站](https://shenyifan.home.blog)
-- [ruannan的博客](https://blog.csdn.net/m0_64180167/)
