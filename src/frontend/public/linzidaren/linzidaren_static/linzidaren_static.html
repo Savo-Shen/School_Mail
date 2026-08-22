@@ -143,6 +143,10 @@ body {
 
 @font-face {
     font-family: '至尊书法字体';
-    src: url('../至尊书法字体.ttf');
+    /* 原字体 32MB（中文字库全集），但这个页面只用到「琳子大人」四个字。
+       用 pyftsubset 做了子集化并转成 woff2：33MB -> 8KB。
+       重新生成的命令见 doc/deployment.md。 */
+    src: url('../至尊书法字体.woff2') format('woff2');
+    font-display: swap;
 }
 </style>
