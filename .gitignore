@@ -38,3 +38,7 @@ dist-ssr/
 logs/
 *.log
 npm-debug.log*
+
+# ---- 本地编辑器/工具配置 ----
+*.code-workspace
+.claude/

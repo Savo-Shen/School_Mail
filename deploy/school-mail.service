@@ -1,0 +1,69 @@
+# 校函后端的 systemd 服务
+#
+# 安装：
+#   sudo cp deploy/school-mail.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now school-mail
+#
+# 查看日志： journalctl -u school-mail -f
+
+[Unit]
+Description=School_Mail (IDEC 计科官网) 后端 API
+After=network.target
+
+[Service]
+Type=notify
+User=savo_shen
+Group=savo_shen
+WorkingDirectory=/home/savo_shen/school_mail/src/backend
+
+# uv 会读取同目录下的 .env（settings.py 里做的），敏感配置不进仓库
+# 内存相关的三个选择（都是实测后定的，见 doc/deployment.md「内存占用」一节）：
+#
+#   --workers 2   这台机器 2 核 / 2G，已跑十余个服务，可用约 720M。
+#                 不用常规的 2*CPU+1，避免挤占其它服务。
+#   --preload     在 master 里先加载 Django 再 fork，worker 通过写时复制共享
+#                 代码页。实测 111MB -> 87MB，省约 24MB（Linux 上更多）。
+#                 副作用：改代码后必须 restart，HUP reload 不会生效 ——
+#                 deploy.sh 用的就是 restart，无影响。
+#   --max-requests 处理满 1000 个请求就回收 worker，防止长期运行的内存增长。
+# 直接调用 venv 里的 gunicorn，不经过 `uv run`。
+# 原因：uv run 每次都会校验/补齐依赖（默认含 dev 组），这台服务器到 PyPI 很慢，
+# 实测会卡住 5 分钟以上，作为常驻服务的启动命令不可接受。
+# 依赖更新统一由 deploy.sh 里的 `uv sync --no-dev` 负责。
+ExecStart=/home/savo_shen/school_mail/src/backend/.venv/bin/gunicorn backend.wsgi:application \
+    --bind 127.0.0.1:8000 \
+    --workers 2 \
+    --preload \
+    --max-requests 1000 \
+    --max-requests-jitter 100 \
+    --timeout 30 \
+    --graceful-timeout 30 \
+    --access-logfile - \
+    --error-logfile - \
+    --capture-output
+
+# 注意：开了 --preload 后 HUP 不会重新加载代码，改代码请用 restart
+ExecReload=/bin/kill -s HUP $MAINPID
+Restart=always
+RestartSec=5
+KillMode=mixed
+
+# 内存上限：实测稳定占用约 87MB，这里给到 4 倍余量。
+# 作用是把故障半径限制住 —— 万一哪天内存泄漏，systemd 会杀掉本服务并重启，
+# 而不是让内核的 OOM killer 去挑一个受害者（很可能挑中占 484MB 的 mysqld，
+# 那就是一次全站事故）。
+MemoryHigh=250M
+MemoryMax=400M
+
+# 安全加固
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+# 代码部署在 /home 下（服务器 sudo 需要密码，/srv 建不了），
+# 所以不能用 ProtectHome=read-only —— 那样服务连自己的代码都读不到。
+ProtectHome=false
+ReadWritePaths=/home/savo_shen/school_mail/src/backend /var/tmp
+
+[Install]
+WantedBy=multi-user.target
