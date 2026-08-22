@@ -215,4 +215,36 @@
     margin-right: 10px;
     text-align: justify;
 }
-</style>         
+
+/* 响应式：.main 是一行 flex，里面 5 个 200px 的盒子（共 1000px），
+   窄屏下后面几个会被裁到视口外。改为换行 + 高度自适应
+   （原来 height 写死 500px / 300px，换行后内容会溢出）。 */
+@media (max-width: 900px) {
+    .main {
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: flex-start;
+        height: auto;
+        gap: 20px;
+        padding: 40px 16px;
+    }
+    .main .Box,
+    .main .Box1,
+    .main .Box2 {
+        margin: 0;
+        height: auto;
+        min-height: 240px;
+        flex: 0 1 240px;
+        padding-bottom: 16px;
+    }
+}
+
+@media (max-width: 560px) {
+    .main .Box,
+    .main .Box1,
+    .main .Box2 {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+}
+</style>

@@ -88,7 +88,7 @@ const { stop }= useIntersectionObserver(
 }
 
 #photo_wall {
-    width: 800px;
+    width: min(800px, 100%);
     height: 900px;
 
 }

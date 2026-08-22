@@ -96,7 +96,7 @@ background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.1
     
 }
 #main_Logo_img {
-    width: 600px;
+    width: min(600px, 100%);
     height: 120px;
     /* background-color: green; */
     /* margin-top: 15px; */
@@ -208,7 +208,7 @@ background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.1
 }
 
 .chinese {
-    width: 600px;
+    width: min(600px, 100%);
     height: 80px;
     /* background-color: pink; */
     font-size: 38px;
@@ -218,7 +218,7 @@ background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.1
     color: rgb(248, 248, 248);
 }
 .english {
-    width: 600px;
+    width: min(600px, 100%);
     height: 40px;
     /* background-color: #fff; */
     font-size: 20px;
@@ -235,7 +235,7 @@ background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.1
     background-color: var(--blue);
 }
 .main_Navigation .main_Navigation1 {
-    width: 1300px;
+    width: min(1300px, 100%);
     height: 67.35px;
     top: 0;
     left: 0;
@@ -244,7 +244,7 @@ background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.1
     margin: auto;
 }
 .main_Navigation .main_Navigation1 .Navigation {
-    width: 1300px;
+    width: min(1300px, 100%);
     height: 67.35px;
     line-height: 67.35px;
     margin: 0 auto;
@@ -268,5 +268,117 @@ background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.1
 .labelHover {
     background-color: #eee;
     color: black;
+}
+
+/* ------------------------------------------------------------------ *
+ * 响应式
+ * 原设计固定 1300px：logo 区独占 600px、导航项 padding 0 40px，
+ * 六项加起来约 890px。窄屏下导航会折行，而导航栏高度写死 67.35px，
+ * 第二行直接被裁掉。下面按断点收缩，并把写死的高度改成自适应。
+ * ------------------------------------------------------------------ */
+
+@media (max-width: 1100px) {
+    #main_Logo {
+        height: auto;
+        padding: 12px 16px;
+        gap: 12px;
+    }
+    #main_Logo_doc {
+        /* flex 子项默认 min-width:auto，会被内容（写死 600px 的标题）撑住不肯收缩 */
+        min-width: 0;
+    }
+    #main_Logo_doc .chinese,
+    #main_Logo_doc .english {
+        /* 原来写死 600px，会把右侧登录区顶出视口 */
+        width: 100%;
+        max-width: 600px;
+        /* 原来是写死的 height + line-height（.english 的 line-height 只有 10px），
+           单行勉强能看，一折行就上下重叠 */
+        height: auto;
+    }
+    #main_Logo_doc .chinese {
+        line-height: 1.3;
+    }
+    #main_Logo_doc .english {
+        line-height: 1.5;
+    }
+    #main_Logo_img {
+        /* 原来占 600px 只为放一张 240px 的图；flex 下还会被压缩到 0 导致 logo 消失 */
+        width: 200px;
+        flex: 0 0 200px;
+        background-size: contain;
+    }
+    #main_Logo_doc {
+        flex: 1 1 auto;
+    }
+    #main_login {
+        margin-right: 0;
+    }
+    .main_Navigation .main_Navigation1 .Navigation a {
+        padding: 0 20px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 820px) {
+    /* 导航允许换行，高度改为自适应，否则第二行被裁 */
+    .main_Navigation,
+    .main_Navigation .main_Navigation1,
+    .main_Navigation .main_Navigation1 .Navigation {
+        height: auto;
+    }
+    .main_Navigation .main_Navigation1 .Navigation {
+        line-height: normal;
+        padding: 4px 0;
+    }
+    .main_Navigation .main_Navigation1 .Navigation a {
+        height: 44px;
+        line-height: 44px;
+        padding: 0 14px;
+        font-size: 15px;
+    }
+    #main_Logo_img {
+        width: 150px;
+        flex: 0 0 150px;
+    }
+    #main_Logo_doc .chinese {
+        font-size: 26px;
+        letter-spacing: 3px;
+    }
+    #main_Logo_doc .english {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 560px) {
+    #main_Logo {
+        flex-wrap: wrap;
+        justify-content: center;
+        text-align: center;
+    }
+    #main_Logo_doc .chinese {
+        font-size: 18px;
+        letter-spacing: 2px;
+    }
+    #main_Logo_doc .english {
+        font-size: 11px;
+    }
+    #main_login {
+        gap: 12px;
+    }
+    #main_login #login,
+    #main_login #logout {
+        width: auto;
+        padding: 0 14px;
+        font-size: 15px;
+    }
+    #main_login #profile {
+        font-size: 15px;
+        max-width: 130px;
+    }
+    .main_Navigation .main_Navigation1 .Navigation a {
+        padding: 0 10px;
+        font-size: 14px;
+    }
 }
 </style>

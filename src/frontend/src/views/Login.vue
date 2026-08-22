@@ -124,7 +124,6 @@ function register() {
     height: 100%;
     width: 100%;
     min-height: 800px;
-    min-width: 1200px;
     background-size: cover;
 } */
 .main {
@@ -179,7 +178,7 @@ function register() {
     color: #ff8500;
 }
 .main .Body {
-    width: 405px;
+    width: min(405px, 100%);
     height: 528.375px;
     background-color: rgb(225, 225, 225, 0.1);
     margin: 90px auto;

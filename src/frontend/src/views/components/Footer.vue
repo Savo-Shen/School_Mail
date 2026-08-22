@@ -49,13 +49,13 @@ function open_linzidaren() {
     float: left;
 }
 ._all ._US ._US_Doc {
-    /* width: 700px; */
+    /* width: min(700px, 100%); */
     /* background-color: #fff; */
     display: flex;
 
 }
 ._all ._US ._US_Doc ._link {
-    /* width: 700px; */
+    /* width: min(700px, 100%); */
     height: 75px;
     color: #fcfcfc;
     display: flex;

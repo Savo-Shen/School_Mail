@@ -64,7 +64,7 @@
     animation-name: slidein1;
 }
 .main .Box2 {
-    width: 450px;
+    width: min(450px, 100%);
     height: 300px;
     margin-top: 180px;
     animation-duration: 2s;
@@ -73,10 +73,10 @@
 @keyframes slidein {
     from {
         margin-left: 100%;
-        width: 450px;
+        width: min(450px, 100%);
     }
     to {
-        width: 450px;
+        width: min(450px, 100%);
     }
 }
 .main .Box3 {
@@ -156,5 +156,34 @@
     background-size: 390px 293px;
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
+}
+
+/* 响应式：.main 是「简介 300px + 视频 450px + 项目信息 300px」三栏，
+   加上左右各 100px 边距共约 1250px，窄屏放不下。改为纵向堆叠。
+   视频元素自身带 width/height 属性，需要用 CSS 覆盖成自适应。 */
+@media (max-width: 1100px) {
+    .main {
+        flex-direction: column;
+        align-items: center;
+        height: auto;
+        gap: 24px;
+        padding: 32px 16px;
+    }
+    .main .Box1,
+    .main .Box2,
+    .main .Box3 {
+        margin: 0;
+        width: min(520px, 100%);
+        height: auto;
+        min-height: 0;
+    }
+    .main .Box1,
+    .main .Box3 {
+        padding-bottom: 16px;
+    }
+    .main .BoxVideeo {
+        width: 100%;
+        height: auto;
+    }
 }
 </style>

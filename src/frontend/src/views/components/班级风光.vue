@@ -91,7 +91,7 @@
 }
 .Box0 .Box0_Photo {
     position: relative;
-    width: 400px;
+    width: min(400px, 100%);
     height: 400px;
     margin-top: 100px;
     /* background-color: pink; */
@@ -104,7 +104,7 @@
 }
 .Box0 .Box0_Photo>div {
     position:absolute;
-    width: 400px;
+    width: min(400px, 100%);
     height: 400px;
     line-height: 100px;
     text-align: center;
@@ -157,12 +157,12 @@
 }
 .main .Box1 .Text {
     height: 600px;
-    width: 650px;
+    width: min(650px, 100%);
     /* background-color: antiquewhite; */
 }
 .main .Box1 .Text .title {
     float: left;
-    width: 650px;
+    width: min(650px, 100%);
     margin-top: 80px;
 }
 .main .Box1 .Text .title p {
@@ -172,7 +172,7 @@
     color: white;
 }
 .main .Box1 .Text .title_English {
-    width: 650px;
+    width: min(650px, 100%);
     float: left;
 }
 .main .Box1 .Text .title_English p {
@@ -182,7 +182,7 @@
     color: rgba(235, 235, 235, 0.64);
 }
 .main .Box1 .Text .Doc {
-    width: 630px;
+    width: min(630px, 100%);
     /* height: 100px; */
     margin-top: 10px;
     margin-left: 10px;
@@ -198,7 +198,7 @@
 }
 .main .Box1 .Photo {
     height: 500px;
-    width: 650px;
+    width: min(650px, 100%);
     margin-top: 76px;
     border-radius: 15px;
     /* background-color: aliceblue; */
@@ -213,7 +213,7 @@
     transition:width 2s, height 2s, transform 2s;
 }
 .main .Box1 .Photo:hover {
-    width: 750px;
+    width: min(750px, 100%);
     height: 600px;
     background-size: 750px 600px;
     -webkit-transform:rotate(360deg);
@@ -227,7 +227,7 @@
 }
 .main .Box2 .Photo2 {
     height: 500px;
-    width: 650px;
+    width: min(650px, 100%);
     margin-top: 76px;
     border-radius: 15px;
     /* background-color: aliceblue; */
@@ -242,7 +242,7 @@
     transition:width 2s, height 2s, transform 2s;
 }
 .main .Box2 .Photo2:hover {
-    width: 750px;
+    width: min(750px, 100%);
     height: 600px;
     background-size: 750px 600px;
     -webkit-transform:rotate(360deg);
@@ -250,11 +250,11 @@
 }
 .main .Box2 .Text2 {
     height: 600px;
-    width: 650px;
+    width: min(650px, 100%);
 }
 .main .Box2 .Text2 .title2 {
     float: left;
-    width: 650px;
+    width: min(650px, 100%);
     margin-top: 120px;
 }
 .main .Box2 .Text2 .title2 p {
@@ -264,7 +264,7 @@
     color: 	#BDB76B;
 }
 .main .Box2 .Text2 .title2_English {
-    width: 650px;
+    width: min(650px, 100%);
     float: left;
 }
 .main .Box2 .Text2 .title2_English p {
@@ -274,7 +274,7 @@
     color:  #F0E68C;
 }
 .main .Box2 .Text2 .Doc2 {
-    width: 630px;
+    width: min(630px, 100%);
     margin-top: 10px;
     margin-left: 10px;    
     float: left;
@@ -372,4 +372,61 @@
     height: 100px;
     background-color: rgba(20, 42, 49);
 } */
+
+/* 响应式：
+   .Box2 是「照片 650px + 文字 650px」双栏，.Box3 是四张 250px 卡片一行，
+   窄屏都放不下。改为堆叠/换行，并把写死的容器高度改成自适应
+   （否则内容换行后会溢出容器）。 */
+@media (max-width: 1100px) {
+    .main .Box2 {
+        flex-direction: column;
+        align-items: center;
+        height: auto;
+        gap: 24px;
+        padding: 32px 16px;
+    }
+    .main .Box2 .Photo2,
+    .main .Box2 .Text2 {
+        width: min(650px, 100%);
+        height: auto;
+        margin-top: 0;
+    }
+    .main .Box2 .Text2 .title2 {
+        float: none;
+        width: 100%;
+        margin-top: 0;
+    }
+    .main .Box2 .Text2 .Doc2 {
+        float: none;
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .main .Box3 {
+        flex-wrap: wrap;
+        justify-content: center;
+        height: auto;
+        gap: 20px;
+        padding: 40px 16px;
+    }
+    .main .Box3 .card {
+        margin-top: 0;
+        height: auto;
+        min-height: 340px;
+        flex: 0 1 250px;
+        padding-bottom: 16px;
+    }
+}
+
+@media (max-width: 560px) {
+    .main .Box3 .card {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+    .main .Box3 .card .doc {
+        width: auto;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+}
 </style>

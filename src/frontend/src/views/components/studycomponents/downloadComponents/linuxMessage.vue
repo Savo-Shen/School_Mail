@@ -99,7 +99,7 @@ body {
     /* *zoom: 1 */
 }
 .w {
-    width: 1300px;
+    width: min(1300px, 100%);
     margin: 0 auto;
 }
 .download_information {
@@ -107,7 +107,7 @@ body {
     /* display: none; */
 }
 .text {
-    width: 700px;
+    width: min(700px, 100%);
     height: 400px;
     margin: 30px 20px;
 }
@@ -121,12 +121,12 @@ body {
     overflow: hidden;
     left: 750px;
     top: 30px;
-    width: 450px;
+    width: min(450px, 100%);
     height: 300px;
     border-radius: 15px;
 }
 .picture img {
-    width: 450px;
+    width: min(450px, 100%);
     height: 300px;
 }
 </style>

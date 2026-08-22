@@ -69,7 +69,7 @@ AMapLoader.load({
 
 #container {
     height: 500px;
-    width: 600px;
+    width: min(600px, 100%);
     border-radius: 10px;
 }
 

@@ -23,7 +23,7 @@ body {
     background-color: rgb(0, 0, 0, 0.3);
 }
 ._all ._title ._title1 {
-    width: 1300px;
+    width: min(1300px, 100%);
     height: 67.35px;
     /* background-color: aqua; */
     top: 0;
@@ -47,7 +47,7 @@ body {
     float: left;
 }
 ._all ._title ._title1 ._navigation {
-    width: 900px;
+    width: min(900px, 100%);
     height: 67.35px;
     line-height: 67.35px;
     margin-right: 70px;
@@ -108,7 +108,7 @@ body {
     /* background-color: green; */
 }
 ._all ._GetIn {
-    width: 600px;
+    width: min(600px, 100%);
     height: 80px;
     font-size: 45px;
     line-height: 80px;
@@ -121,7 +121,7 @@ body {
     text-decoration: none;
 }
 ._all ._GetIn1 {
-    width: 600px;
+    width: min(600px, 100%);
     height: 80px;
     font-size: 45px;
     line-height: 80px;
@@ -134,7 +134,7 @@ body {
     text-decoration: none;
 }
 ._all ._Auto {
-    width: 450px;
+    width: min(450px, 100%);
     height: 40px;
     margin-top: 50px;
     margin-bottom: 0;
@@ -200,13 +200,13 @@ body {
     float: left;
 }
 ._all ._US ._US_Doc {
-    width: 700px;
+    width: min(700px, 100%);
     height: 150px;
     /* background-color: #fff; */
     float: left;
 }
 ._all ._US ._US_Doc ._link {
-    width: 700px;
+    width: min(700px, 100%);
     height: 75px;
     color: #fcfcfc;
     /* line-height: 50px; */
@@ -221,7 +221,7 @@ body {
     color: rgb(255, 255, 255, 0.7);
 }
 ._all ._US ._US_Doc ._my {
-    width: 700px;
+    width: min(700px, 100%);
     height: 75px;
     /* background-color: pink; */
     font-size: 13px;

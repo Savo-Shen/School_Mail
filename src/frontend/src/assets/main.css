@@ -11,14 +11,48 @@ body {
   overflow-x: hidden;
 }
 
+/* ------------------------------------------------------------------ *
+ * 响应式基础层
+ *
+ * 这个站点原本是按 1300px 固定宽度设计的（44 处 width:1300px，
+ * 外加 1200px 的 min-width 硬底），窄屏下会横向溢出、内容被裁。
+ * 这里用一层通用规则兜底，避免逐个组件重写几百个像素值：
+ *   - 定宽容器已批量改成 width: min(Npx, 100%)，宽屏渲染不变、窄屏收缩
+ *   - 下面补上媒体元素、长文本、表格的溢出防护
+ * ------------------------------------------------------------------ */
+
+/* 图片/视频/画布永远不撑破容器 */
+img,
+video,
+canvas,
+svg,
+iframe {
+  max-width: 100%;
+}
+
+img,
+video {
+  height: auto;
+}
+
+/* 长英文串（URL、邮箱）在窄屏下换行而不是撑宽父级 */
+body {
+  overflow-wrap: break-word;
+}
+
+/* 表格窄屏下可独立横向滚动，不影响页面 */
+table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
 #app {
-  
-  /*取消最大宽度*/
-  /* max-width: 1280px; */
   margin: 0 auto;
-  padding: 2rem;
+  /* 原来是 padding: 2rem，只在 <1024px 生效（下面的媒体查询把它清零），
+     结果小屏上四周多出 32px 黑边，而这是个通栏设计的站点。统一清零。 */
+  padding: 0;
   width: 100%;
-  min-width: 1080px;
   font-weight: normal;
 }
 

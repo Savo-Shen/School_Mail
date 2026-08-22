@@ -90,7 +90,7 @@
     justify-content: center;
 }
 .main .Y_All {
-    width: 1200px;
+    width: min(1200px, 100%);
     height: 800px;
     margin-bottom: 100px;
     /* background-color: pink; */
@@ -136,7 +136,7 @@ li {
     text-decoration: underline;
 }
 .main .Y_All .Y_Doc {
-    width: 940px;
+    width: min(940px, 100%);
     height: 800px;
     /* border-radius: 20px 20px 20px 20px; */
     box-shadow: 5px 5px 5px 5px rgb(0, 0, 0, 0.3);
@@ -145,7 +145,7 @@ li {
     float: right;
 }
 .main .Y_All .Y_Doc .Y_Doc_Navigation {
-    width: 940px;
+    width: min(940px, 100%);
     height: 48px;
     display: flex;
     justify-content: space-between;
@@ -164,7 +164,7 @@ li {
     float: left;
 }
 .main .Y_All .Y_Doc .Y_Doc_Navigation .empty {
-    /* width: 820px; */
+    /* width: min(820px, 100%); */
     height: 48px;
     /* background-color: pink; */
     /* border-bottom: 1px solid rgb(225, 225, 225, 0.5); */
@@ -211,7 +211,7 @@ li {
 .main .Y_All .Y_Doc .Y_Doc_Text .Text_Map {
     margin-top: 10px;
     margin-left: 120px;
-    width: 700px;
+    width: min(700px, 100%);
     height: 250px;
     /* background-color: #fff; */
     background-image: url(@img/MJU_Map.png);
@@ -222,7 +222,7 @@ li {
 .main .Y_All .Y_Doc .Y_Doc_Text .DOC {
     margin-top: 30px;
     margin-left: 20px;
-    width: 900px;
+    width: min(900px, 100%);
     /* height: 200px; */
     /* background-color: #fff; */
 }

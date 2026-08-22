@@ -31,7 +31,6 @@ function goKeepRunning() {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    min-width: 1200px;
     height: 600px;
     background-color: rgb(124, 207, 117);
 }
@@ -54,7 +53,7 @@ function goKeepRunning() {
 }
 #image {
     height: 400px;
-    width: 600px;
+    width: min(600px, 100%);
     border-radius: 60px;
     background-color: blue;
     background-image: url(@img/game/KeepRunning2.png);
@@ -109,5 +108,34 @@ function goKeepRunning() {
 .button:hover {
     background-color: rgb(20, 42, 49);
     color: white;
+}
+
+/* 响应式：.body 是「600px 配图 + 文案」双栏，两侧各占 50%，
+   窄屏下图片会被压扁、文案挤成竖条。改为纵向堆叠。 */
+@media (max-width: 900px) {
+    #main {
+        height: auto;
+        padding: 40px 0;
+    }
+    .body {
+        flex-direction: column;
+        height: auto;
+        gap: 24px;
+        width: 100%;
+    }
+    .image,
+    .right {
+        width: 100%;
+        height: auto;
+    }
+    .right {
+        padding: 0 20px;
+        text-align: center;
+    }
+    #image {
+        width: min(600px, calc(100% - 32px));
+        height: 220px;
+        border-radius: 24px;
+    }
 }
 </style>

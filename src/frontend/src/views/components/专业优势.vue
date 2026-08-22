@@ -64,7 +64,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width: 1200px;
+    width: min(1200px, 100%);
     height: 400px;
 }
 
@@ -148,5 +148,39 @@
     width: 318px;
     height: 130px;
     /* background-color: pink; */
+}
+
+/* 响应式：三张 320px 的卡片在窄屏放不下，改为换行堆叠。
+   容器原本写死 height:400px，卡片换行后会溢出，改成自适应高度。 */
+@media (max-width: 1100px) {
+    #content {
+        flex-wrap: wrap;
+        height: auto;
+        gap: 24px;
+        padding: 0 16px 40px;
+    }
+    .card {
+        height: auto;
+        min-height: 380px;
+        padding-bottom: 24px;
+        flex: 1 1 300px;
+        max-width: 360px;
+    }
+}
+
+@media (max-width: 700px) {
+    #main {
+        min-height: 0;
+    }
+    #title {
+        margin-top: 40px;
+        margin-bottom: 30px;
+        padding: 0 16px;
+        text-align: center;
+    }
+    .card {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
 }
 </style>

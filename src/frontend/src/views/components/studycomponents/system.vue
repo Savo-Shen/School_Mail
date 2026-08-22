@@ -178,14 +178,14 @@ body {
     /* *zoom: 1 */
 }
 .w {
-    width: 1300px;
+    width: min(1300px, 100%);
     margin: 0 auto;
 }
 .clanguage,
 .math {
     /* display: none; */
     margin: 50px auto;
-    width: 1600px;
+    width: min(1600px, 100%);
     height: 734px;
     border-radius: 15px;
     background-position: center;
@@ -249,7 +249,7 @@ body {
     height: 38px;
 }
 .cmain {
-    width: 1550px;
+    width: min(1550px, 100%);
     height: 650px;
     margin: 0 auto;
 }
@@ -274,7 +274,7 @@ body {
 }
 .download {
     float: left;
-    width: 1210px;
+    width: min(1210px, 100%);
     height: 100%;
     margin-left: 20px;
 }

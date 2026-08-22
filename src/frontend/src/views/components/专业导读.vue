@@ -63,7 +63,7 @@
 
 #image {
     margin-right: 100px;
-    width: 700px;
+    width: min(700px, 100%);
     height: 500px;
     background-image: url("@img/CE.jpg");
     background-size: cover;
@@ -73,4 +73,26 @@
     box-shadow: 10px 10px 10px #ccc;
 }
 
+
+/* 响应式：#main 是 文字 + 图片 的双栏 flex，窄屏下会把文字挤成窄条、
+   图片被裁。改为纵向堆叠，并把写死的 100px 边距换成自适应内边距。 */
+@media (max-width: 900px) {
+    #main {
+        flex-direction: column;
+        min-height: 0;
+        padding: 40px 16px;
+        gap: 28px;
+    }
+    #text {
+        max-width: 100%;
+        margin-left: 0;
+    }
+    #image {
+        margin-right: 0;
+        max-width: 100%;
+    }
+    #content {
+        margin-top: 24px;
+    }
+}
 </style>

@@ -168,7 +168,7 @@
     /* float: left; */
 }
 #main_Logo_doc {
-    width: 600px;
+    width: min(600px, 100%);
     height: 120px;
     /* background-color: green; */
     position: absolute;
@@ -210,7 +210,7 @@
     color: #ff8500;
 }
 .chinese {
-    width: 600px;
+    width: min(600px, 100%);
     height: 80px;
     /* background-color: pink; */
     font-size: 38px;
@@ -219,7 +219,7 @@
     color: #fcfcfc;
 }
 .english {
-    width: 600px;
+    width: min(600px, 100%);
     height: 40px;
     /* background-color: #fff; */
     font-size: 20px;
@@ -234,7 +234,7 @@
     background-color: rgb(0, 0, 0, 0.7);
 }
 .main_Navigation .main_Navigation1 {
-    width: 1300px;
+    width: min(1300px, 100%);
     height: 67.35px;
     top: 0;
     left: 0;
@@ -243,7 +243,7 @@
     margin: auto;
 }
 .main_Navigation .main_Navigation1 .Navigation {
-    width: 1300px;
+    width: min(1300px, 100%);
     height: 67.35px;
     line-height: 67.35px;
     margin: 0 auto;
@@ -264,7 +264,7 @@
     color: black;
 }
 .main .Y_All {
-    width: 1200px;
+    width: min(1200px, 100%);
     height: 700px;
     /* background-color: pink; */
     margin: 20px auto;
@@ -308,7 +308,7 @@ li {
     text-decoration: underline;
 }
 .main .Y_All .Y_Doc {
-    width: 940px;
+    width: min(940px, 100%);
     height: 700px;
     /* border-radius: 20px 20px 20px 20px; */
     box-shadow: 5px 5px 5px 5px rgb(0, 0, 0, 0.3);
@@ -317,7 +317,7 @@ li {
     float: right;
 }
 .main .Y_All .Y_Doc .Y_Doc_Navigation {
-    width: 940px;
+    width: min(940px, 100%);
     height: 48px;
     /* border-radius: 20px 20px 0px 0px; */
     /* background-color: pink; */
@@ -335,7 +335,7 @@ li {
     float: left;
 }
 .main .Y_All .Y_Doc .Y_Doc_Navigation .empty {
-    width: 820px;
+    width: min(820px, 100%);
     height: 48px;
     /* background-color: pink; */
     border-bottom: 1px solid rgb(225, 225, 225, 0.5);
@@ -361,14 +361,14 @@ li {
 .main .Y_All .Y_Doc .Y_Doc_Text {
     margin: 0;
     padding: 0;
-    width: 940px;
+    width: min(940px, 100%);
     height: 640px;
     /* background-color: #fff; */
 }
 .main .Y_All .Y_Doc .Y_Doc_Text .Text_Table {
     margin-top: 140px;
     margin-left: 20px;
-    width: 900px;
+    width: min(900px, 100%);
     height: 400px;
     /* background-color: #fff; */
     text-align: center;
@@ -411,13 +411,13 @@ li {
     float: left;
 }
 .main ._US ._US_Doc {
-    width: 700px;
+    width: min(700px, 100%);
     height: 150px;
     /* background-color: #fff; */
     float: left;
 }
 .main ._US ._US_Doc ._link {
-    width: 700px;
+    width: min(700px, 100%);
     height: 75px;
     color: #fcfcfc;
     /* line-height: 50px; */
@@ -432,7 +432,7 @@ li {
     color: #ff8500;
 }
 .main ._US ._US_Doc ._my {
-    width: 700px;
+    width: min(700px, 100%);
     height: 75px;
     /* background-color: pink; */
     font-size: 13px;

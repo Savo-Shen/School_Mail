@@ -89,7 +89,7 @@ const Value = ref(null)
     max-height: 70px;
 }
 ._all ._GetIn {
-    width: 600px;
+    width: min(600px, 100%);
     height: 80px;
     font-size: 45px;
     line-height: 80px;
@@ -106,7 +106,7 @@ const Value = ref(null)
     background-color: rgb(0, 0, 0, 0);
 }
 ._all ._GetIn1 {
-    width: 600px;
+    width: min(600px, 100%);
     height: 80px;
     font-size: 45px;
     line-height: 80px;
@@ -123,7 +123,7 @@ const Value = ref(null)
     background-color: rgb(0, 0, 0, 0);
 }
 ._all ._Auto {
-    /* width: 450px; */
+    /* width: min(450px, 100%); */
     height: 40px;
     margin-top: 50px;
     margin-bottom: 0;

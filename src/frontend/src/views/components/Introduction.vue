@@ -114,7 +114,7 @@
     justify-content: center;
 }
 .main .Y_All {
-    width: 1200px;
+    width: min(1200px, 100%);
     height: 2450px;
     /* background-color: pink; */
     /* margin: 20px auto; */
@@ -158,7 +158,7 @@ li {
     text-decoration: underline;
 }
 .main .Y_All .Y_Doc {
-    width: 940px;
+    width: min(940px, 100%);
     /* height: 2450px; */
     /* border-radius: 20px 20px 20px 20px; */
     box-shadow: 5px 5px 5px 5px rgb(0, 0, 0, 0.3);
@@ -167,7 +167,7 @@ li {
     float: right;
 }
 .main .Y_All .Y_Doc .Y_Doc_Navigation {
-    width: 940px;
+    width: min(940px, 100%);
     height: 48px;
     /* border-radius: 20px 20px 0px 0px; */
     /* background-color: pink; */
@@ -185,7 +185,7 @@ li {
     float: left;
 }
 .main .Y_All .Y_Doc .Y_Doc_Navigation .empty {
-    /* width: 820px; */
+    /* width: min(820px, 100%); */
     height: 48px;
     /* background-color: pink; */
     /* border-bottom: 1px solid rgb(225, 225, 225, 0.5); */
@@ -216,7 +216,7 @@ li {
 .main .Y_All .Y_Doc .Y_Doc_Text {
     margin: 0;
     padding: 0;
-    width: 940px;
+    width: min(940px, 100%);
     /* height: 2390px; */
     /* background-color: #fff; */
 }
@@ -227,7 +227,7 @@ li {
     text-align: justify;
 }
 .main .Y_All .Y_Doc .Y_Doc_Text ._Doc {
-    width: 900px;
+    width: min(900px, 100%);
     /* height: 2300px; */
     margin-bottom: 50px;
     float: left;

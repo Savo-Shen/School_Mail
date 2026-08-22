@@ -74,7 +74,7 @@ async function logout() {
     
 }
 #main_Logo_img {
-    width: 600px;
+    width: min(600px, 100%);
     height: 120px;
     /* background-color: green; */
     /* margin-top: 15px; */
@@ -107,7 +107,7 @@ async function logout() {
 }
 
 #main_login {
-    width: 600px;
+    width: min(600px, 100%);
     height: 40px;
     display: flex;
     left:200px;
@@ -175,7 +175,7 @@ async function logout() {
 }
 
 .chinese {
-    width: 600px;
+    width: min(600px, 100%);
     height: 80px;
     /* background-color: pink; */
     font-size: 38px;
@@ -185,7 +185,7 @@ async function logout() {
     color: rgb(243,243,243);
 }
 .english {
-    width: 600px;
+    width: min(600px, 100%);
     height: 40px;
     /* background-color: #fff; */
     font-size: 20px;
@@ -201,7 +201,7 @@ async function logout() {
     background-color:rgb(138, 202, 218);
 }
 .main_Navigation .main_Navigation1 {
-    width: 1300px;
+    width: min(1300px, 100%);
     height: 67.35px;
     top: 0;
     left: 0;
@@ -210,7 +210,7 @@ async function logout() {
     margin: auto;
 }
 .main_Navigation .main_Navigation1 .Navigation {
-    width: 1300px;
+    width: min(1300px, 100%);
     height: 67.35px;
     line-height: 67.35px;
     margin: 0 auto;

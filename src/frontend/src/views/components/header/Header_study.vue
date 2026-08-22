@@ -155,7 +155,7 @@ body {
     /* *zoom: 1 */
 }
 .w {
-    width: 1300px;
+    width: min(1300px, 100%);
     margin: 0 auto;
 }
 .all {

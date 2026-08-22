@@ -54,7 +54,7 @@ async function logout(){
     background-color: rgb(0, 0, 0, 0.3);
 }
 ._all ._title ._title1 {
-    width: 1300px;
+    width: min(1300px, 100%);
     height: 67.35px;
     /* background-color: aqua; */
     top: 0;
@@ -79,7 +79,7 @@ async function logout(){
     cursor: pointer;
 }
 ._all ._title ._title1 ._navigation {
-    width: 900px;
+    width: min(900px, 100%);
     height: 67.35px;
     line-height: 67.35px;
     margin-right: 70px;
