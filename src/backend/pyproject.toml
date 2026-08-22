@@ -11,6 +11,10 @@ dependencies = [
     "django-environ>=0.12",
     "whitenoise>=6.9",
     "gunicorn>=23.0",
+    # 课表日历工具：解析教务系统导出的 Excel 并生成 .ics
+    "openpyxl>=3.1",              # .xlsx / .xlsm
+    "xlrd>=2.0",                  # 老式 .xls（教务系统的课表导出仍在用）
+    "icalendar>=6.0",             # 生成 iCalendar，负责转义与折行
 ]
 
 [dependency-groups]

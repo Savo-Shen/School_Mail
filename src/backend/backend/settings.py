@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "corsheaders",
     # 本项目
     "school_mail.apps.SchoolMailConfig",
+    "timetable.apps.TimetableConfig",
 ]
 
 if DEBUG:
@@ -178,6 +179,7 @@ REST_FRAMEWORK = {
         "login": "10/min",       # 防暴力破解
         "register": "5/hour",
         "destructive": "5/hour",
+        "timetable": "30/min",   # 解析 Excel / 生成 ics 都比普通接口贵
     },
     # 部署在 Nginx / Cloudflare 后面时，限流要按真实客户端 IP 计算。
     # Nginx 已经用 CF-Connecting-IP 还原了 REMOTE_ADDR，所以这里设 0
@@ -222,6 +224,12 @@ if DEBUG and not CORS_ALLOWED_ORIGINS and not CORS_ALLOWED_ORIGIN_REGEXES:
 # --------------------------------------------------------------------------- #
 
 ALLOW_REGISTRATION = env("ALLOW_REGISTRATION")
+
+# 课表日历上传的 Excel 只在内存里解析，不落盘。上传大小在
+# timetable/serializers.py 里卡到 2MB，这里把 Django 的内存阈值提到同一量级，
+# 避免它先写一个临时文件出来。
+FILE_UPLOAD_MAX_MEMORY_SIZE = 2 * 1024 * 1024
+DATA_UPLOAD_MAX_MEMORY_SIZE = 4 * 1024 * 1024
 
 
 # --------------------------------------------------------------------------- #

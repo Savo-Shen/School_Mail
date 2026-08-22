@@ -113,6 +113,13 @@ http.interceptors.response.use(
   async (error) => {
     const { config, response } = error
 
+    // responseType:'blob' 的请求（比如下载 .ics）失败时，错误体也是 Blob，
+    // toApiError 读不到里面的 detail，会把「第一教学周必须是星期一」这类
+    // 明确提示降级成「请求失败」。这里先还原成 JSON 再往下走。
+    if (response?.data instanceof Blob) {
+      response.data = await blobToJson(response.data)
+    }
+
     const canRetry =
       response?.status === 401 &&
       config &&
@@ -135,6 +142,15 @@ http.interceptors.response.use(
     throw toApiError(error)
   },
 )
+
+/** 失败响应是 Blob 时还原成 JSON；不是 JSON 就返回 null，交给默认文案 */
+async function blobToJson(blob) {
+  try {
+    return JSON.parse(await blob.text())
+  } catch {
+    return null
+  }
+}
 
 /** 把 axios 的各种失败形态统一成 ApiError */
 function toApiError(error) {

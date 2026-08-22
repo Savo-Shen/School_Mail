@@ -32,6 +32,14 @@ const routes = [
         component: () => import('@/views/FootPrintWall.vue')
     },
     {
+        path: '/timetable',
+        name: 'Timetable',
+        keepAlive: false,
+        // 课表是个人信息，未登录直接跳登录页，登录完再跳回来
+        meta: { requiresAuth: true },
+        component: () => import('@/views/Timetable.vue')
+    },
+    {
         path: '/printcanvas',
         name: 'PrintCanvas',
         keepAlive: false,

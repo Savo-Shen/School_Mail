@@ -6,6 +6,7 @@
 | :---: | :---: | :---: | :---: |
 | 2022.08.05 | 1.0.0 | 初次拟定 | 沈逸帆 |
 | 2026.08.22 | 2.0.0 | 改用 JWT 认证，接口路径调整，统一错误格式 | 沈逸帆 |
+| 2026.08.22 | 2.1.0 | 新增课表日历接口 | 沈逸帆 |
 
 ## 认证方式
 
@@ -42,6 +43,8 @@ Authorization: Bearer <access_token>
 | POST | `/api/auth/logout/` | [登出](#登出) | 否 | 默认 |
 | GET | `/api/auth/me/` | [取当前用户](#取当前用户) | 是 | 默认 |
 | DELETE | `/api/auth/me/` | [注销账号](#注销账号) | 是 | 5 次/小时 |
+| POST | `/api/timetable/parse/` | [解析课表 Excel](#解析课表-excel) | 是 | 30 次/分钟 |
+| POST | `/api/timetable/ics/` | [生成课表日历](#生成课表日历) | 是 | 30 次/分钟 |
 
 > 旧版的 `/api/account_list/`（返回全部用户名和邮箱）已**移除** —— 它无需登录即可调用，
 > 属于个人信息泄露。
@@ -171,3 +174,122 @@ token 本身已失效时也返回成功（结果一致）。
 
 只能注销**自己**的账号。旧版的「超级密码」`superCode` 已移除 —— 它硬编码在源码里（`123456`），
 任何人拿到都能删掉别人的账号。
+
+---
+
+## 课表日历
+
+把教务系统导出的课表变成 `.ics` 日历文件，分两步：
+
+1. `POST /api/timetable/parse/` 上传 Excel，拿到结构化的课程和时段；
+2. 用户在页面上校对（勾掉不上的课、改教室、调作息）后，
+   `POST /api/timetable/ics/` 把校对完的数据换成 `.ics`。
+
+分两步是为了让中间那一步可编辑 —— 教务系统的导出并不总是干净的，
+比如网格课表会把整个班的体育选项课都列在一格里。
+
+两个接口都**需要登录**：课表属于个人信息，且解析 Excel 比普通接口贵。
+上传的文件只在内存里解析，不落盘、不入库，服务端不保存任何课表数据。
+
+### 解析课表 Excel
+
+`POST /api/timetable/parse/`，`multipart/form-data`，需要 `Authorization` 头。
+
+| 字段 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| file | file | `.xlsx` / `.xlsm` / `.xls`，不超过 2MB |
+
+自动识别三种导出格式：
+
+| format | 说明 | 「上课时间」的写法 |
+| :--- | :--- | :--- |
+| `undergraduate` | 本科选课清单 | `星期一第1-2节{1-16周};星期四第3-4节{1-15周(单)}` |
+| `graduate` | 研究生课表清单 | `3-18周： 周一 5-6节  ,2周： 周四 3-4节` |
+| `grid` | 网格课表（行是节次、列是星期） | 单元格里 `课程名/(1-2节)1-16周/ J-506/教师/……` |
+
+响应 `200`：
+
+```json
+{
+  "format": "undergraduate",
+  "format_label": "本科选课清单",
+  "title": "2025-2026年第1学期 2024级……1班课表",
+  "sections": [{ "index": 1, "start": "08:30", "end": "09:15" }],
+  "courses": [
+    {
+      "key": "c0",
+      "name": "高等数学",
+      "teacher": "王芳",
+      "course_id": "MA101",
+      "class_name": "",
+      "category": "",
+      "credit": "",
+      "sessions": [
+        {
+          "key": "c0s0",
+          "weekday": 1,
+          "start_section": 1,
+          "end_section": 2,
+          "weeks": [1, 2, 3],
+          "weeks_text": "1-3周",
+          "location": "J-506"
+        }
+      ]
+    }
+  ],
+  "warnings": ["高等数学：无法识别的上课时间：待定"],
+  "stats": { "course_count": 11, "session_count": 16, "max_week": 16, "max_section": 10 }
+}
+```
+
+| 字段 | 说明 |
+| :--- | :--- |
+| sections | 默认作息，供前端渲染和回传；各校区不同，允许用户改 |
+| weekday | 1 = 周一 …… 7 = 周日 |
+| weeks | 展开后的周次列表，单双周已经算好 |
+| weeks_text | 原始写法（`1-15周(单)`），只用于展示 |
+| warnings | 解析时跳过的内容，如实返回，不静默丢弃 |
+
+认不出格式返回 `400`，`code` 为 `unsupported_timetable`。
+
+### 生成课表日历
+
+`POST /api/timetable/ics/`，JSON，需要 `Authorization` 头。
+
+```json
+{
+  "calendar_name": "2025-2026_1课程表",
+  "first_monday": "2025-09-01",
+  "sections": [{ "index": 1, "start": "08:30", "end": "09:15" }],
+  "alarm_minutes": [10, 1440],
+  "courses": [
+    {
+      "name": "高等数学",
+      "teacher": "王芳",
+      "sessions": [
+        { "weekday": 1, "start_section": 1, "end_section": 2, "weeks": [1, 3], "location": "J-506" }
+      ]
+    }
+  ]
+}
+```
+
+| 字段 | 必填 | 说明 |
+| :--- | :---: | :--- |
+| calendar_name | 否 | 日历名（`X-WR-CALNAME`）和下载文件名，默认「课程表」 |
+| first_monday | 是 | 第 1 教学周的**星期一**，不是星期一返回 400 |
+| sections | 是 | 作息时间，必须覆盖用到的每一节，否则返回 400 |
+| alarm_minutes | 否 | 提前多少分钟提醒，最多 4 个；空数组表示不加提醒 |
+| courses | 是 | 只传用户勾选的课和时段 |
+
+响应 `200`，`Content-Type: text/calendar; charset=utf-8`，响应体就是 `.ics` 内容：
+
+| 响应头 | 说明 |
+| :--- | :--- |
+| `Content-Disposition` | 附件，文件名按 RFC 5987 编码 |
+| `X-Event-Count` | 生成的日程条数 |
+
+日程的 `UID` 由「课程 + 日期 + 节次」哈希得到，是稳定的 ——
+改完课表重新生成再导入是**覆盖**，不会多出一份重复日程。
+
+单次最多 5000 条日程，超出返回 `400`。

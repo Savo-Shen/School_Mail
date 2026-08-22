@@ -28,6 +28,10 @@ function openStudy() {
     router.push('/study')
 }
 
+function openTimetable() {
+    router.push('/timetable')
+}
+
 async function logout() {
     await auth.logout()
     // store 是响应式的，界面会自动更新，不需要 router.go(0) 强刷页面
@@ -67,6 +71,7 @@ function openLabel(labelId) {
                         <!-- <a @click="openLabel(6)" :class="{labelHover: isOpen==6}">社区互动</a> -->
                         <!-- <a @click="openLabel(7)" :class="{labelHover: isOpen==7}">共创营地</a> -->
                         <a @click="openStudy">学习资源</a>
+                        <a @click="openTimetable">课表日历</a>
                         <a @click="openLabel(2)" :class="{labelHover: isOpen==2}">关于我们</a>
                     </div>
                 </div>

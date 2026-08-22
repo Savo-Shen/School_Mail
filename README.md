@@ -19,6 +19,12 @@
 ### <div align="center">项目运行</div>
 本项目现在运行在 [ideccs.savo-shen.com](https://ideccs.savo-shen.com/) 上，前后端均已部署。
 
+### <div align="center">站内工具</div>
+
+| 工具 | 地址 | 说明 |
+|---|---|---|
+| 课表日历生成 | `/timetable` | 上传教务系统导出的课表，在虚拟日历里校对后生成 `.ics` 导入手机日历。需登录；支持网格课表、本科选课清单、研究生课表清单三种导出格式，上传的文件只在内存里解析，不落盘也不入库。 |
+
 ### <div align="center">技术栈</div>
 
 | 端 | 技术 |

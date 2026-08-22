@@ -6,4 +6,5 @@
 | Login | 登录页 |
 | Register | 注册页 |
 | NotFound | 404页面 |
+| Timetable | 课表日历生成（上传课表 Excel 生成 .ics，需登录） |
 | components | 组件文件夹 |
