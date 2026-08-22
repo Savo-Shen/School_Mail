@@ -1,26 +1,22 @@
 <script setup>
 
-import router from '@/router'
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 
-import { logout_request } from '@/api/api.js'
+import { useAuthStore } from '@/stores/auth.js'
 
-const props = defineProps({
-    isLogin: {
-        type: Boolean,
-        default: false,
-    }
-})
+const auth = useAuthStore()
+const router = useRouter()
+
+const isLogin = computed(() => auth.isAuthenticated)
 
 function login() {
     router.push('/login')
 }
 
-function logout(){
-
-    logout_request()
-
+async function logout(){
+    await auth.logout()
     router.push('/')
-    router.go(0)
 }
 </script>
 

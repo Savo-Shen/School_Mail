@@ -1,17 +1,15 @@
 <script setup>
 
-import { ref } from 'vue'
-import { is_login, logout_request } from '@/api/api.js'
-import router from '@/router'
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 
-const props = defineProps({
-    isLogin: {
-        type: Boolean,
-        default: false,
-    }
-})
+import { useAuthStore } from '@/stores/auth.js'
 
-const username = ref('')
+const auth = useAuthStore()
+const router = useRouter()
+
+const isLogin = computed(() => auth.isAuthenticated)
+const username = computed(() => auth.username)
 
 function login() {
     router.push('/login')
@@ -21,29 +19,10 @@ function register() {
     router.push('/register')
 }
 
-function logout() {
-    
-    logout_request()
-
+async function logout() {
+    await auth.logout()
     router.push('/')
-    router.go(0)
-
 }
-
-// 判断是否已经登录了
-async function profile() {
-  const value = await is_login();
-  if (value['status'] == true) {
-    console.log(value['data'])
-    username.value = value['data']
-    return value['data']
-  } 
-  // 没登录的话跳转到登录页面
-  else {
-    // router.push('/login');
-  }
-}
-profile()
 </script>
 
 <template>

@@ -1,10 +1,14 @@
 <script setup>
 
-import { ref, onMounted, onActivated } from 'vue'
-import { login_request, is_login } from '@/api/api.js'
-import { getRandomBg } from '@js/random_bg.js'
+import { computed, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-import router from '@/router'
+import { ApiError } from '@/api/http.js'
+import { getRandomBg } from '@js/random_bg.js'
+import { useAuthStore } from '@/stores/auth.js'
+
+const auth = useAuthStore()
+const router = useRouter()
 
 const title = ref('登录')
 const message = ref('')
@@ -14,60 +18,46 @@ const password = ref('')
 const main = ref(null)
 const Login_background = getRandomBg()
 
-const isLogin = ref(false)
+const isLogin = computed(() => auth.isAuthenticated)
 
-// 生命周期
 onMounted(() => {
-  main.value.style.backgroundImage = "url(" + Login_background + ")"
+    main.value.style.backgroundImage = "url(" + Login_background + ")"
+    if (isLogin.value) {
+        message.value = '您已经登录了'
+    }
 })
 
 async function login() {
 
-    if (username.value == '') {
+    if (username.value === '') {
         message.value = '请填写用户名'
         return
     }
-    if (password.value == '') {
+    if (password.value === '') {
         message.value = '请填写密码'
         return
     }
 
-    var data = {
-        username: username.value,
-        password: password.value,
-    }
+    message.value = ''
 
-    var value = await login_request(data)
-
-    if (value['status'] == true) {
+    try {
+        await auth.login({ username: username.value, password: password.value })
         router.push('/')
+    } catch (error) {
+        message.value = error instanceof ApiError ? error.message : '登录失败，请稍后重试'
+        if (!(error instanceof ApiError)) console.error(error)
     }
-
-    message.value = value['data']
-
 }
 
 function register() {
     router.push('/register')
 }
 
-async function profile() {
-  const value = await is_login();
-  if (value['status'] == true) {
-    message.value = '您已经登录了'
-  } 
-  // 没登录的话跳转到登录页面
-  else {
-    // router.push('/login');
-  }
-}
-profile()
-
 </script>
 
 <template>
 
-<div class="main">
+<div class="main" ref="main">
         <div class="main_Navigation">
             <div class="Navigation_Logo"></div>
             <div class="Navigation_Title">计科账号</div>
@@ -90,22 +80,17 @@ profile()
                 <form>
                     <div class="From_Username">
                         <div class="Logo"></div>
-                        <input type="text" placeholder="邮箱\手机号码\计科ID" name="用户名" class="Text">
-                        <!-- <label for="username">用户名</label> -->
-                        <!-- <input v-model="username" placeholder="用户名" /> -->
+                        <input v-model="username" @keyup.enter="login" type="text" placeholder="邮箱\手机号码\计科ID" name="用户名" class="Text">
                     </div>
                     <div class="Form_Password">
                         <div class="Logo1"></div>
-                        <input type="password" placeholder="密码" name="Passord" class="Password">
-                        <!-- <label for="password">密码</label>
-                        <input v-model="password" type="password" placeholder="密码" /> -->
+                        <input v-model="password" @keyup.enter="login" type="password" placeholder="密码" name="Password" class="Password">
                     </div>
                     <div class="Form_Login">
                         <input @click="login" type="button" value="登录" name="登录" class="Login"/>
                     </div>
                     <div class="Form_Register"><input @click="register" type="button" value="注册" name="注册" class="Register"/></div>
-                    <!-- <label v-if="!isLogin" id="message">{{message}}</label>
-                    <label v-if="isLogin">您已经登录了</label> -->
+                    <label v-if="message" id="message">{{ message }}</label>
                     <div class="Form_End">
                         <div class="Forget">
                             <a href="#">忘记密码?</a>
@@ -162,7 +147,7 @@ profile()
     /* top: 50%; */
     /* margin-top: -20px; */
     margin-left: 100px;
-    background-image: url(../../images/IDEC_CE_Logo.png);
+    background-image: url(@img/IDEC_CE_Logo.png);
     background-size: 100px 100px;
     background-position: center;
     background-repeat: no-repeat;
@@ -265,7 +250,7 @@ profile()
     width: 60px;
     height: 60px;
     background-color: rgb(0, 0, 0, 0.3);;
-    background-image: url(../../images/登录.png);
+    background-image: url(@img/登录.png);
     background-size: 30px 30px;
     background-repeat: no-repeat;
     background-position: center;
@@ -295,7 +280,7 @@ profile()
     width: 60px;
     height: 60px;
     background-color: rgb(0, 0, 0, 0.3);;
-    background-image: url(../../images/密码.png);
+    background-image: url(@img/密码.png);
     background-size: 30px 30px;
     background-repeat: no-repeat;
     background-position: center;
@@ -382,7 +367,7 @@ profile()
 .main .Body .Form .Form_End .Out .Out_Logo {
     width: 36.71px;
     height: 36.71px;
-    background-image: url(../../images/退出登录.png);
+    background-image: url(@img/退出登录.png);
     background-size: 25px 25px;
     background-position: center;
     background-repeat: no-repeat;

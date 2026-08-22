@@ -1,0 +1,4 @@
+# pnpm 默认不执行依赖的 install 脚本（供应链安全考虑）。
+# esbuild 需要靠 install 脚本下载对应平台的原生二进制，明确放行。
+allowBuilds:
+  esbuild: true

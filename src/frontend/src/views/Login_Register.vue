@@ -1,10 +1,14 @@
 <script setup>
 
 import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
-import { login_request, is_login, register_request, account_list } from '@/api/api.js'
+import { ApiError } from '@/api/http.js'
+import { useAuthStore } from '@/stores/auth.js'
 
-import router from '@/router';
+const auth = useAuthStore()
+const router = useRouter()
+const route = useRoute()
 
 const isActive = ref(false)
 
@@ -42,83 +46,111 @@ const styleVar = ref({
 
 function goHome() {
 	router.push('/')
-	router.push('/')
+}
+
+function resetLoginErrors() {
+	isLoginUsernameError.value = false
+	isLoginPasswordError.value = false
+}
+
+function resetRegisterErrors() {
+	isRegisterUsernameError.value = false
+	isRegisterPasswordError.value = false
+	isRegisterEmailError.value = false
 }
 
 async function login() {
 
-	if (loginUsername.value == '') {
+	resetLoginErrors()
+
+	if (loginUsername.value === '') {
 		loginMessage.value = "请填写用户名"
 		isLoginUsernameError.value = true
 		return
 	}
-	isLoginUsernameError.value = false
-	if (loginPassword.value == '') {
+	if (loginPassword.value === '') {
 		loginMessage.value = '请填写密码'
 		isLoginPasswordError.value = true
 		return
 	}
-	isLoginPasswordError.value = false
 
-	var data = {
-		username: loginUsername.value,
-		password: loginPassword.value,
+	loginMessage.value = ''
+
+	try {
+		await auth.login({
+			username: loginUsername.value,
+			password: loginPassword.value,
+		})
+		// 支持被守卫拦下来时记录的返回地址
+		const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
+		router.push(redirect)
+	} catch (error) {
+		if (error instanceof ApiError) {
+			loginMessage.value = error.message
+			// 账号密码错误时两个输入框一起标红
+			if (error.status === 401) {
+				isLoginUsernameError.value = true
+				isLoginPasswordError.value = true
+			}
+			isLoginUsernameError.value = isLoginUsernameError.value || Boolean(error.fieldError('username'))
+			isLoginPasswordError.value = isLoginPasswordError.value || Boolean(error.fieldError('password'))
+		} else {
+			loginMessage.value = '登录失败，请稍后重试'
+			console.error(error)
+		}
 	}
+}
 
-	var value = await login_request(data)
+async function register () {
 
-	if (value['status'] == true) {
-		router.push('/')
-	}
+	resetRegisterErrors()
 
-	loginMessage.value = value['data']
-
-	}
-
-async function register () {  
-
-	if (registerUsername.value == '') {
+	if (registerUsername.value === '') {
 		registerMessage.value = '请填写用户名'
 		isRegisterUsernameError.value = true
 		return
 	}
-	isRegisterUsernameError.value = false
-	if (registerPassword.value == '') {
+	if (registerPassword.value === '') {
 		registerMessage.value = '请填写密码'
 		isRegisterPasswordError.value = true
 		return
 	}
-	isRegisterPasswordError.value = false
-	if (registerEmail.value == '') {
+	if (registerEmail.value === '') {
 		registerMessage.value = '请填写邮箱'
 		isRegisterEmailError.value = true
 		return
 	}
-	isRegisterEmailError.value = false
-	var data = {
-		username: registerUsername.value,
-		password: registerPassword.value,
-		email: registerEmail.value
+
+	registerMessage.value = ''
+
+	try {
+		await auth.register({
+			username: registerUsername.value,
+			password: registerPassword.value,
+			email: registerEmail.value,
+		})
+		// 注册成功后直接登录，省掉再输一次账号密码
+		await auth.login({
+			username: registerUsername.value,
+			password: registerPassword.value,
+		})
+		router.push('/')
+	} catch (error) {
+		if (error instanceof ApiError) {
+			registerMessage.value = error.message
+			isRegisterUsernameError.value = Boolean(error.fieldError('username'))
+			isRegisterPasswordError.value = Boolean(error.fieldError('password'))
+			isRegisterEmailError.value = Boolean(error.fieldError('email'))
+		} else {
+			registerMessage.value = '注册失败，请稍后重试'
+			console.error(error)
+		}
 	}
-
-	var value = await register_request(data)
-
-	registerMessage.value = value['data']
-
 }
 
-async function profile() {
-	const value = await is_login();
-
-	if (value['status'] == true) {
-		loginMessage.value = '您已经登录了'
-	} 
-	// 没登录的话跳转到登录页面
-	else {
-	// router.push('/login');
-	}
+function forget() {
+	loginMessage.value = '找回密码功能还没做，请联系管理员重置'
 }
-profile()
 
 </script>   
 
@@ -137,24 +169,24 @@ profile()
 				<h2 class="form__title">注册</h2>
 				<input v-model="registerUsername" type="text" placeholder="用户名" class="input" :class="{'input_error': isRegisterUsernameError}" name="注册用户名"/>				
 				<input v-model="registerPassword" type="password" placeholder="密码" class="input" :class="{'input_error': isRegisterPasswordError}" name="注册密码"/>
-				<input v-model="registerEmail" type="email" placeholder="邮箱" class="input" :class="{'input_error': isRegisterEmailError}" name="注册邮箱"/>
+				<input v-model="registerEmail" @keyup.enter="register" type="email" placeholder="邮箱" class="input" :class="{'input_error': isRegisterEmailError}" name="注册邮箱"/>
 				<div class="message">
 					{{registerMessage}}
 				</div>
-				<button @click="register" class="btn">注册</button>
+				<button @click="register" :disabled="auth.loading" class="btn">{{ auth.loading ? '注册中…' : '注册' }}</button>
 			</div>
 		</div>
 		
 		<div class="container__form container--signin">
 			<div class="form" id="form2">
 				<h2 class="form__title">登录</h2>
-				<input v-model="loginUsername" type="text" placeholder="用户名" class="input" :class="{'input_error': isLoginUsernameError}" name="登录用户名"/>
-				<input v-model="loginPassword" type="password" placeholder="密码" class="input" :class="{'input_error': isLoginPasswordError}" name="登录密码"/>
+				<input v-model="loginUsername" @keyup.enter="login" type="text" placeholder="用户名" class="input" :class="{'input_error': isLoginUsernameError}" name="登录用户名"/>
+				<input v-model="loginPassword" @keyup.enter="login" type="password" placeholder="密码" class="input" :class="{'input_error': isLoginPasswordError}" name="登录密码"/>
 				<div class="message">
 					{{loginMessage}}
 				</div>
-				<a @click="forget" href="#" class="link">忘记密码?</a>
-				<button @click="login" class="btn">登录</button>
+				<a @click.prevent="forget" href="#" class="link">忘记密码?</a>
+				<button @click="login" :disabled="auth.loading" class="btn">{{ auth.loading ? '登录中…' : '登录' }}</button>
 			</div>
 		</div>
 		

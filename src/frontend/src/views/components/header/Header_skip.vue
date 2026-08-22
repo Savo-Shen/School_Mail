@@ -1,21 +1,20 @@
 <script setup>
 
-import { ref } from 'vue'
-import { is_login, logout_request } from '@/api/api.js'
+import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
+
 import { baseColor } from '@/assets/js/color';
-import router from '@/router'
+import { useAuthStore } from '@/stores/auth.js'
 
-// const props = defineProps({
-//     isLogin: {
-//         type: Boolean,
-//         default: false,
-//     }
-// })
+const auth = useAuthStore()
+const router = useRouter()
 
-const username = ref('')
-const emit = defineEmits('cd_page')
+const emit = defineEmits(['cd_page'])
 const isOpen = ref(0)
-const isLogin = ref(false)
+
+// 登录状态从全局 store 读，不再每个组件各自请求一次接口
+const isLogin = computed(() => auth.isAuthenticated)
+const username = computed(() => auth.username)
 
 function login() {
     router.push('/login')
@@ -29,13 +28,10 @@ function openStudy() {
     router.push('/study')
 }
 
-function logout() {
-    
-    logout_request()
-
+async function logout() {
+    await auth.logout()
+    // store 是响应式的，界面会自动更新，不需要 router.go(0) 强刷页面
     router.push('/')
-    router.go(0)
-
 }
 
 function openLabel(labelId) {
@@ -43,22 +39,6 @@ function openLabel(labelId) {
     emit('cd_page', labelId)
 }
 
-// 判断是否已经登录了
-async function profile() {
-  const value = await is_login();
-  if (value['status'] == true) {
-    isLogin.value = true
-    console.log(value['data'])
-    username.value = value['data']
-    return value['data']
-  } 
-  // 没登录的话跳转到登录页面
-  else {
-    isLogin.value = false
-    // router.push('/login');
-  }
-}
-profile()
 </script>
 
 <template>

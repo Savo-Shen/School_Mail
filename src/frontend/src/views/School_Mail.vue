@@ -1,13 +1,12 @@
 <script setup>
 
 import { ref } from 'vue'
-import { is_login } from '@/api/api.js'
 import { homePageComponentsList } from '@/views/components/index.js'
 
 import router from '@/router/index.js'
 
 import Header_skip from './components/header/Header_skip.vue';
-import Footer from '@/views/components/footer.vue'
+import Footer from '@/views/components/Footer.vue'
 
 const isOpen = ref(0)
 

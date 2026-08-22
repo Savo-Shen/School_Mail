@@ -1,9 +1,12 @@
-<script setup>  
+<script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-import { register_request, account_list }from '@/api/api.js';
+import { ApiError } from '@/api/http.js'
+import { useAuthStore } from '@/stores/auth.js'
 
-import router from '@/router'
+const auth = useAuthStore()
+const router = useRouter()
 
 const formTitle = ref('注册信息')
 const message = ref('')
@@ -13,38 +16,36 @@ const password = ref('')
 const checkPassword = ref('')
 const email    = ref('')
 
-const accountList = ref(null)
+async function register () {
 
-async function register () {  
-
-    if (username.value == '' || password.value == '' || checkPassword.value == '' || email.value == '') {
+    if (username.value === '' || password.value === '' || checkPassword.value === '' || email.value === '') {
         message.value = '请填写完整信息'
         return
     }
-    else if (password.value != checkPassword.value) {
+    if (password.value !== checkPassword.value) {
         message.value = '两次密码不一致'
         return
     }
 
-    var data = {
-        username: username.value,
-        password: password.value,
-        email: email.value
+    message.value = ''
+
+    try {
+        await auth.register({
+            username: username.value,
+            password: password.value,
+            email: email.value,
+        })
+        // 注册成功后直接登录并回首页
+        await auth.login({ username: username.value, password: password.value })
+        router.push('/')
+    } catch (error) {
+        message.value = error instanceof ApiError ? error.message : '注册失败，请稍后重试'
+        if (!(error instanceof ApiError)) console.error(error)
     }
-
-    var value = await register_request(data)
-
-    message.value = value['data']
-
 }
 
 function login(){
     router.push('/login')
-}
-
-async function userList(){
-    const user_list = await account_list()
-    accountList.value = user_list['data']
 }
 
 </script>
@@ -101,8 +102,6 @@ async function userList(){
                             height: 40px;"/>
                         </div>
                         <div class="Bottom_List">
-                            <input @click="userList" type="button" value="用户列表" class="Buttom3" style="width: 108px;
-                            height: 40px;"/>
                         </div>
                     </div>
                     <div class="Form_End">
@@ -149,7 +148,7 @@ async function userList(){
     /* top: 50%; */
     /* margin-top: -20px; */
     margin-left: 100px;
-    background-image: url(../../images/IDEC_CE_Logo.png);
+    background-image: url(@img/IDEC_CE_Logo.png);
     background-size: 100px 100px;
     background-position: center;
     background-repeat: no-repeat;
@@ -250,7 +249,7 @@ async function userList(){
     width: 40px;
     height: 40px;
     background-color: rgb(0, 0, 0, 0.3);
-    background-image: url(../../images/登录.png);
+    background-image: url(@img/登录.png);
     background-size: 20px 20px;
     border-radius: 7px;
     background-repeat: no-repeat;
@@ -280,7 +279,7 @@ async function userList(){
     width: 40px;
     height: 40px;
     background-color: rgb(0, 0, 0, 0.3);
-    background-image: url(../../images/密码.png);
+    background-image: url(@img/密码.png);
     background-size: 20px 20px;
     border-radius: 7px;
     background-repeat: no-repeat;
@@ -309,7 +308,7 @@ async function userList(){
     width: 40px;
     height: 40px;
     background-color: rgb(0, 0, 0, 0.3);
-    background-image: url(../../images/确认密码.png);
+    background-image: url(@img/确认密码.png);
     background-size: 18px 18px;
     border-radius: 7px;
     background-repeat: no-repeat;
@@ -338,7 +337,7 @@ async function userList(){
     width: 40px;
     height: 40px;
     background-color: rgb(0, 0, 0, 0.3);
-    background-image: url(../../images/邮箱.png);
+    background-image: url(@img/邮箱.png);
     background-size: 18px 18px;
     border-radius: 7px;
     background-repeat: no-repeat;
@@ -447,7 +446,7 @@ async function userList(){
 .main .Register_Body .Register_Form .Form_End .Out .Out_Logo {
     width: 36.71px;
     height: 36.71px;
-    background-image: url(../../images/退出登录.png);
+    background-image: url(@img/退出登录.png);
     background-size: 25px 25px;
     background-position: center;
     background-repeat: no-repeat;
