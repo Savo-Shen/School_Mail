@@ -9,10 +9,10 @@ homePageComponentsList是用来存放需要展示在home page页面中的所有�
 
 import { ref } from 'vue'
 
-import News from './news.vue'
-import FootprintWall from './footprintWall.vue'
-import PhotoWall from './photoWall.vue'
-import Welcome from './welcome.vue'
+import News from './News.vue'
+import FootprintWall from './FootprintWall.vue'
+import PhotoWall from './PhotoWall.vue'
+import Welcome from './Welcome.vue'
 import StudyEntrance from './StudyEntrance.vue'
 import SavoGameShortcut from './SavoGameShortcut.vue'
 

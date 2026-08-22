@@ -1,6 +1,6 @@
 <script setup>
 function open_linzidaren() {
-    window.open("/linzidaren/linzidaren_static/linzidaren_static.html")
+    window.open(import.meta.env.BASE_URL + "linzidaren/linzidaren_static/linzidaren_static.html")
 }
 </script>
 

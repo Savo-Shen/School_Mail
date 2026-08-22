@@ -22,7 +22,7 @@
     /* top: 50%; */
     /* margin-top: -20px; */
     margin-left: 100px;
-    background-image: url(../../images/IDEC_CE_Logo.png);
+    background-image: url(@img/IDEC_CE_Logo.png);
     background-size: 100px 100px;
     background-position: center;
     background-repeat: no-repeat;
@@ -123,7 +123,7 @@
     width: 40px;
     height: 40px;
     background-color: rgb(0, 0, 0, 0.3);
-    background-image: url(../../images/登录.png);
+    background-image: url(@img/登录.png);
     background-size: 20px 20px;
     border-radius: 7px;
     background-repeat: no-repeat;
@@ -153,7 +153,7 @@
     width: 40px;
     height: 40px;
     background-color: rgb(0, 0, 0, 0.3);
-    background-image: url(../../images/密码.png);
+    background-image: url(@img/密码.png);
     background-size: 20px 20px;
     border-radius: 7px;
     background-repeat: no-repeat;
@@ -182,7 +182,7 @@
     width: 40px;
     height: 40px;
     background-color: rgb(0, 0, 0, 0.3);
-    background-image: url(../../images/确认密码.png);
+    background-image: url(@img/确认密码.png);
     background-size: 18px 18px;
     border-radius: 7px;
     background-repeat: no-repeat;
@@ -211,7 +211,7 @@
     width: 40px;
     height: 40px;
     background-color: rgb(0, 0, 0, 0.3);
-    background-image: url(../../images/邮箱.png);
+    background-image: url(@img/邮箱.png);
     background-size: 18px 18px;
     border-radius: 7px;
     background-repeat: no-repeat;
@@ -314,7 +314,7 @@
 .main .Register_Body .Register_Form .Form_End .Out .Out_Logo {
     width: 36.71px;
     height: 36.71px;
-    background-image: url(../../images/退出登录.png);
+    background-image: url(@img/退出登录.png);
     background-size: 25px 25px;
     background-position: center;
     background-repeat: no-repeat;

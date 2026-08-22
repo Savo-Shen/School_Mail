@@ -110,7 +110,7 @@ body {
 
 .overlay {
 	background-color: var(--lightblue);
-	background: url("../../images/background_Login.jpg");
+	background: url("@img/background_Login.jpg");
 	background-attachment: fixed;
 	background-position: center;
 	background-repeat: no-repeat;

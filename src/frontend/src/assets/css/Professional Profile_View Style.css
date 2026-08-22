@@ -27,7 +27,7 @@
     margin-left: 100px;
     /* 让盒子垂直居中显示 */
     margin-right: 0;
-    background-image: url(../../images/IDEC_CE_Logo_With_Name.png);
+    background-image: url(@img/IDEC_CE_Logo_With_Name.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: 240px 120px;
@@ -51,7 +51,7 @@
     margin-top: -30px;
     margin-left: 1150px;
     /* background-color: pink; */
-    background-image: url(../../images/登录.png);
+    background-image: url(@img/登录.png);
     background-size: 40px 40px;
     background-position: center;
     background-repeat: no-repeat;
@@ -234,7 +234,7 @@ li {
     height: 375px;
     /* background-color: #fff; */
     margin-top: 10px;
-    background-image: url(../../images/专业风光/专业风光1.jpg);
+    background-image: url(@img/专业风光/专业风光1.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 500px 357px;
@@ -243,7 +243,7 @@ li {
     width: 940px;
     height: 375px;
     margin-bottom: 10px;
-    background-image: url(../../images/专业风光/专业风光2.jpg);
+    background-image: url(@img/专业风光/专业风光2.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 500px 357px;
@@ -261,7 +261,7 @@ li {
     height: 375px;
     margin-bottom: 10px;
     margin-top: 10px;
-    background-image: url(../../images/专业风光/专业风光3.jpg);
+    background-image: url(@img/专业风光/专业风光3.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 500px 357px;
@@ -271,7 +271,7 @@ li {
     height: 375px;
     margin-bottom: 10px;
     margin-top: 10px;
-    background-image: url(../../images/专业风光/专业风光4.jpg);
+    background-image: url(@img/专业风光/专业风光4.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 500px 357px;
@@ -281,7 +281,7 @@ li {
     height: 375px;
     /* margin-bottom: 10px; */
     margin-top: 10px;
-    background-image: url(../../images/专业风光/专业风光5.jpg);
+    background-image: url(@img/专业风光/专业风光5.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 500px 357px;
@@ -291,7 +291,7 @@ li {
     height: 375px;
     /* margin-bottom: 10px;
     margin-top: 10px; */
-    background-image: url(../../images/专业风光/专业风光6.jpg);
+    background-image: url(@img/专业风光/专业风光6.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 500px 357px;
@@ -301,7 +301,7 @@ li {
     height: 375px;
     margin-bottom: 10px;
     /* margin-top: 10px; */
-    background-image: url(../../images/专业风光/专业风光7.jpg);
+    background-image: url(@img/专业风光/专业风光7.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 500px 357px;
@@ -311,7 +311,7 @@ li {
     height: 375px;
     /* margin-bottom: 10px; */
     margin-top: 10px;
-    background-image: url(../../images/专业风光/专业风光8.jpg);
+    background-image: url(@img/专业风光/专业风光8.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 500px 357px;
@@ -321,7 +321,7 @@ li {
     height: 375px;
     margin-bottom: 10px;
     /* margin-top: 10px; */
-    background-image: url(../../images/专业风光/专业风光9.jpg);
+    background-image: url(@img/专业风光/专业风光9.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 500px 357px;
@@ -341,7 +341,7 @@ li {
     height: 75px;
     margin-left: 250px;
     /* background-color: #fff; */
-    background-image: url(../../images/IDEC_CE_Logo_With_Name.png);
+    background-image: url(@img/IDEC_CE_Logo_With_Name.png);
     background-size: 150px 75px;
     background-repeat: no-repeat;
     float: left;

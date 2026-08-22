@@ -1,6 +1,6 @@
 <script setup>
 function goKeepRunning() {
-    window.open('/KeepRunning/index.html');
+    window.open(import.meta.env.BASE_URL + 'KeepRunning/index.html');
 }
 </script>
 
@@ -10,7 +10,7 @@ function goKeepRunning() {
 <div id='main'>
     <div class="body">
         <div class="image">
-            <img id="image">
+            <div id="image"></div>
         </div>
         <div class="right">
             <div class="text">

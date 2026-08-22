@@ -5,7 +5,7 @@
 body {
     overflow: hidden;
     height: 822px;
-    background-image: url(../../images/IT2.jpg);
+    background-image: url(@img/IT2.jpg);
     background-repeat: no-repeat;
     background-size: 1480px 822px;
     background-position: center top;
@@ -40,7 +40,7 @@ body {
     line-height: 67.35px;
     color: #fcfcfc;
     /* background-color: blue; */
-    background-image: url(../../images/IDEC_CE_Logo.png);
+    background-image: url(@img/IDEC_CE_Logo.png);
     background-size: 67px 67px;
     background-position: center;
     background-repeat: no-repeat;
@@ -69,7 +69,7 @@ body {
 ._all ._title ._title1 ._logo_landing {
     width: 68.28px;
     height: 67.35px;
-    background-image: url(../../images/Login1.png);
+    background-image: url(@img/Login1.png);
     background-size: 36px 36px;
     background-position: center;
     background-repeat: no-repeat;
@@ -101,7 +101,7 @@ body {
     margin-bottom: 0;
     margin-left: auto;
     margin-right: auto;
-    background-image: url(../../images/computer1.png);
+    background-image: url(@img/computer1.png);
     background-size: 70px 70px;
     background-repeat: no-repeat;
     background-position: center;
@@ -194,7 +194,7 @@ body {
     height: 75px;
     margin-left: 250px;
     /* background-color: #fff; */
-    background-image: url(../../images/IDEC_CE_Logo_With_Name.png);
+    background-image: url(@img/IDEC_CE_Logo_With_Name.png);
     background-size: 150px 75px;
     background-repeat: no-repeat;
     float: left;

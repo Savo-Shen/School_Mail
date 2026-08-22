@@ -96,7 +96,6 @@ body {
 }
 
 .clearfix {
-    *zoom: 1
 }
 .w {
     width: 1300px;

@@ -27,7 +27,7 @@
     margin-left: 100px;
     /* 让盒子垂直居中显示 */
     margin-right: 0;
-    background-image: url(../../images/IDEC_CE_Logo_With_Name.png);
+    background-image: url(@img/IDEC_CE_Logo_With_Name.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: 240px 120px;
@@ -51,7 +51,7 @@
     margin-top: -30px;
     margin-left: 1150px;
     /* background-color: pink; */
-    background-image: url(../../images/登录.png);
+    background-image: url(@img/登录.png);
     background-size: 40px 40px;
     background-position: center;
     background-repeat: no-repeat;
@@ -326,7 +326,7 @@ li {
     height: 75px;
     margin-left: 250px;
     /* background-color: #fff; */
-    background-image: url(../../images/IDEC_CE_Logo_With_Name.png);
+    background-image: url(@img/IDEC_CE_Logo_With_Name.png);
     background-size: 150px 75px;
     background-repeat: no-repeat;
     float: left;

@@ -6,7 +6,7 @@ import {studyPageComponentsList} from '@/views/components/studycomponents/index.
 import { useIntersectionObserver } from '@vueuse/core'
 
 import Header_study from '@/views/components/header/Header_study.vue';
-import Footer from '@/views/components/footer.vue';
+import Footer from '@/views/components/Footer.vue';
 
 const isOpen = ref(null)
 const isClicked = ref(false)
@@ -260,7 +260,6 @@ body {
 }
 
 .clearfix {
-    *zoom: 1
 }
 .w {
     width: 1300px;
