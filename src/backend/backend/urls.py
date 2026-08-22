@@ -1,22 +1,20 @@
-"""backend URL Configuration
+"""校函项目根路由。
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+    /admin/   Django 后台
+    /api/     业务接口，见 school_mail/urls.py
 """
+
+from django.conf import settings
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("api/", include("school_mail.urls"))
+    path("admin/", admin.site.urls),
+    path("api/", include("school_mail.urls")),
 ]
+
+if settings.DEBUG:
+    # 开发环境提供 DRF 可浏览 API 的登录入口，方便调试
+    urlpatterns += [
+        path("api-auth/", include("rest_framework.urls")),
+    ]

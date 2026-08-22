@@ -1,0 +1,28 @@
+[project]
+name = "school-mail-backend"
+version = "1.0.0"
+description = "校函 / IDEC 计科官网 后端 API"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=5.2,<6.0",            # LTS，安全支持到 2028 年 4 月
+    "djangorestframework>=3.16",
+    "djangorestframework-simplejwt>=5.5",
+    "django-cors-headers>=4.7",
+    "django-environ>=0.12",
+    "whitenoise>=6.9",
+    "gunicorn>=23.0",
+]
+
+[dependency-groups]
+dev = [
+    "django-extensions>=4.1",
+    "ruff>=0.12",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+exclude = ["*/migrations/*"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "DJ"]
