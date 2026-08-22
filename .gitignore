@@ -1,5 +1,40 @@
-.idea
-.vscode
-.gitignore
-**/.DS_Store
+# ---- OS ----
 .DS_Store
+**/.DS_Store
+Thumbs.db
+
+# ---- Editors ----
+.idea/
+.vscode/
+!.vscode/extensions.json
+*.swp
+
+# ---- Python / Django ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+*.sqlite3
+*.sqlite3-journal
+/src/backend/staticfiles/
+/src/backend/media/
+
+# ---- Node / Vite ----
+node_modules/
+dist/
+dist-ssr/
+/src/frontend/ideccs/
+*.local
+
+# ---- Secrets ----
+.env
+.env.*
+!.env.example
+!.env.development
+!.env.production
+
+# ---- Logs ----
+logs/
+*.log
+npm-debug.log*
