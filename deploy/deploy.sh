@@ -64,7 +64,9 @@ echo "==> 重启服务"
 # 装了 /etc/sudoers.d/school-mail 之后这一步才能免密自动完成。
 if sudo -n systemctl restart "$SERVICE" 2>/dev/null; then
   sleep 2
-  sudo -n systemctl is-active --quiet "$SERVICE" || {
+  # 查询状态不需要提权，别加 sudo：sudoers 是按完整命令行精确匹配的，
+  # 多一个 --quiet 就不匹配规则，会退化成要密码。
+  systemctl is-active --quiet "$SERVICE" || {
     echo "!! 服务未能启动，看日志：journalctl -u $SERVICE -n 50" >&2
     exit 1
   }
@@ -82,5 +84,16 @@ else
 fi
 
 echo "==> 健康检查"
-curl -fsS http://127.0.0.1:8000/api/health/ && echo
+# 两个头都不能少：
+#   Host              —— 直连 127.0.0.1 时 Host 是 IP，不在 ALLOWED_HOSTS 里，
+#                        Django 会返回 400 DisallowedHost
+#   X-Forwarded-Proto —— 生产开了 SECURE_SSL_REDIRECT，不带这个头会被 301 到 https
+HEALTH_HOST="${HEALTH_HOST:-ideccs.savo-shen.com}"
+if ! RESP=$(curl -fsS --max-time 15 \
+      -H "Host: $HEALTH_HOST" -H "X-Forwarded-Proto: https" \
+      http://127.0.0.1:8000/api/health/); then
+  echo "!! 健康检查失败。服务日志：journalctl -u $SERVICE -n 50" >&2
+  exit 1
+fi
+echo "    $RESP"
 echo "✓ 部署完成"

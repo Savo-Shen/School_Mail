@@ -9,6 +9,8 @@
 #
 # 装上之后 deploy/deploy.sh 全自动跑完，不再需要手工重启。
 
+# 只需要 restart —— is-active / status 普通用户就能查，不必提权。
+# 注意 sudoers 是按【完整命令行】精确匹配的：这里写 restart school-mail，
+# 那么 `sudo systemctl restart --now school-mail` 之类带额外参数的调用
+# 都不会匹配，会退化成要密码。
 savo_shen ALL=(root) NOPASSWD: /usr/bin/systemctl restart school-mail
-savo_shen ALL=(root) NOPASSWD: /usr/bin/systemctl is-active school-mail
-savo_shen ALL=(root) NOPASSWD: /usr/bin/systemctl status school-mail
