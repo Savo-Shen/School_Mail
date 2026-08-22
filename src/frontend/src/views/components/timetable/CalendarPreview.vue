@@ -91,6 +91,18 @@ function blockStyle(item) {
   }
 }
 
+/** 悬浮提示：格子里放不下的信息（完整教师名、地点）在这里给全 */
+function tooltip(item) {
+  return [
+    item.name,
+    item.teacher && `任课教师：${item.teacher}`,
+    `${item.startTime}-${item.endTime}`,
+    item.location || '未标注地点',
+  ]
+    .filter(Boolean)
+    .join('\n')
+}
+
 function stepWeek(delta) {
   const next = currentWeek.value + delta
   if (next >= 1 && next <= props.maxWeek) currentWeek.value = next
@@ -229,9 +241,10 @@ watch(
           class="block"
           :class="{ narrow: item.span >= 3 }"
           :style="blockStyle(item)"
-          :title="`${item.name}\n${item.startTime}-${item.endTime}\n${item.location || '未标注地点'}`"
+          :title="tooltip(item)"
         >
           <strong>{{ item.name }}</strong>
+          <span v-if="item.teacher" class="teacher">{{ item.teacher }}</span>
           <span v-if="item.location" class="place">{{ item.location }}</span>
           <span class="time">{{ item.startTime }}-{{ item.endTime }}</span>
         </div>
@@ -271,7 +284,7 @@ watch(
               backgroundColor: colorOf(item.colorIndex).bg,
               color: colorOf(item.colorIndex).text,
             }"
-            :title="`${item.name} ${item.startTime}-${item.endTime} ${item.location}`"
+            :title="tooltip(item)"
           >
             {{ item.name }}
           </div>
@@ -403,7 +416,9 @@ watch(
 }
 
 .week-grid {
-  grid-template-rows: repeat(var(--rows), 56px);
+  /* 一格要放课名 + 教师 + 地点 + 时间四行；跨两节的课有两倍高度，
+     只占一节的课会裁掉最后一行的时间 —— 左边时间列本来就写着，不影响判读 */
+  grid-template-rows: repeat(var(--rows), 60px);
 }
 
 .time-cell {
@@ -454,11 +469,20 @@ watch(
   font-size: 13px;
 }
 
+.block .teacher,
 .block .place,
 .block .time {
   display: block;
   opacity: 0.75;
   font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 教师比地点和时间更常被找，压得轻一点 */
+.block .teacher {
+  opacity: 0.9;
 }
 
 /* 三门以上并排时格子只剩几十像素，只留课程名，别再挤地点和时间 */
@@ -472,6 +496,7 @@ watch(
   line-height: 1.2;
 }
 
+.block.narrow .teacher,
 .block.narrow .place,
 .block.narrow .time {
   display: none;
