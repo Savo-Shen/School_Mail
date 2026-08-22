@@ -422,8 +422,42 @@ curl -so /dev/null -w '%{http_code}\n' https://ideccs.savo-shen.com/login
 **后端**：
 
 ```bash
-ssh savo && cd /home/savo_shen/school_mail && ./deploy/deploy.sh
+ssh savo && cd ~/school_mail && ./deploy/deploy.sh
 ```
+
+脚本依次做：拉代码 → 同步依赖 → 迁移 → 收集静态文件 → 生产自检 → 重启 → 健康检查，
+任何一步失败即中止。
+
+### 让重启也免密（建议装一次）
+
+服务器 sudo 需要密码，`deploy.sh` 最后一步重启会停下来让你手工执行。
+装一个**只放行这几条 systemctl 命令**的 sudoers 规则即可全自动：
+
+```bash
+sudo install -m 440 -o root -g root \
+  ~/school_mail/deploy/sudoers-school-mail /etc/sudoers.d/school-mail
+sudo visudo -c          # 校验语法，务必执行
+```
+
+这不是完整 NOPASSWD，只放行 `systemctl restart/is-active/status school-mail`。
+
+### 服务器上的仓库是「部分克隆 + 稀疏检出」
+
+服务器到 GitHub 带宽很差，完整克隆会卡在 11MB 不动；而且服务器根本不需要
+前端那 20MB 图片。所以配置成：
+
+```bash
+git config extensions.partialClone origin
+git config remote.origin.partialclonefilter blob:none
+git sparse-checkout set --no-cone "/src/backend/**" "/deploy/**" "/doc/**" "/README.md" "/.gitignore"
+git fetch --depth 1 --filter=blob:none origin main
+git branch --set-upstream-to=origin/main main
+```
+
+结果 `.git` 只有 296KB，`src/` 下只有 `backend`，`git pull --ff-only` 正常工作。
+
+需要完整仓库时：`git sparse-checkout disable && git fetch --unshallow`
+（会拉取全部历史，包括压缩前那 115MB 原图，慎用）。
 
 **前端**：
 
