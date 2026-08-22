@@ -30,8 +30,11 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background-color:white;
-    
+    background-color: white;
+    /* 文字 600px + 图片 + 两侧各 100px 边距在 1440 视口下正好占满，
+       space-around 分不出空隙，文字和图片会贴在一起 */
+    gap: 60px;
+    padding: 0 24px;
 }
 
 #text {

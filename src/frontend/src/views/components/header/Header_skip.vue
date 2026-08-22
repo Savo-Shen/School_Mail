@@ -116,12 +116,19 @@ background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.1
     background-repeat: no-repeat;
     background-position: center;
     background-size: 240px 120px;
-    right: 50px;
+    /* 和右侧登录区等分剩余空间，保证中间标题居中。
+       两侧 padding 必须对称：flex-basis:0 在这里按内容盒算，
+       padding 会加到外面，只给一侧加会让两边差出一个 padding 的宽度。 */
+    flex: 1 1 0;
+    min-width: 0;
+    padding-left: 60px;
     /* float: left; */
     cursor: pointer;
 }
 #main_Logo_doc {
     height: 120px;
+    /* 按内容宽度，由左右两侧等分的弹性区把它挤到正中 */
+    flex: 0 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -136,13 +143,19 @@ background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.1
 
 #main_login {
     /* 原来写死 400px + margin-left:200px，在 flex 布局里会被挤压，
-       导致「您好，xxx」折成两行。改成按内容撑开 + gap 控制间距。 */
+       导致「您好，xxx」折成两行。改成按内容撑开 + gap 控制间距。
+       flex:1 1 0 让它和左侧 logo 区等分剩余空间，中间的标题才会真正居中
+       —— 否则 space-between 下标题会被推向元素较窄的那一侧。 */
     height: 40px;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 20px;
-    margin-right: 60px;
-    flex-shrink: 0;
+    /* 用 padding 而不是 margin：margin 会从弹性分配的空间里扣掉，
+       导致左右两侧不等宽、中间标题偏移 30px */
+    padding-right: 60px;
+    flex: 1 1 0;
+    min-width: 0;
 }
 
 #main_login #profile {
@@ -213,23 +226,29 @@ background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.1
 }
 
 .chinese {
-    width: min(600px, 100%);
+    /* 原来写死 width: min(600px, 100%)。这个 600px 和英文副标题没有关系，
+       实测副标题排一行要 505px，而这一行按内容只有 504px —— 差 1px。
+       换个字体就会折行：Safari 下 Inter 没加载，回落到系统字体后正好超一点。
+       改成按内容撑开，两行各取所需。 */
     height: 80px;
     /* background-color: pink; */
     font-size: 38px;
     font-weight: 200;
     line-height: 80px;
     text-align: center;
+    white-space: nowrap;
     color: rgb(248, 248, 248);
 }
 .english {
-    width: min(600px, 100%);
-    height: 40px;
+    /* 原来 height: 40px + line-height: 10px。行高比字号还小，
+       一旦折行两行就直接叠在一起，而且会顶穿 40px 的盒子压到中文标题上
+       —— 线上出现的正是这个。行高给正常值，宽屏不折行。 */
     /* background-color: #fff; */
     font-size: 20px;
     color: rgb(227, 225, 210);
     text-align: center;
-    line-height: 10px;
+    line-height: 1.4;
+    white-space: nowrap;
 }
 .main_Navigation {
     width: 100%;
@@ -300,6 +319,8 @@ background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.1
         /* 原来是写死的 height + line-height（.english 的 line-height 只有 10px），
            单行勉强能看，一折行就上下重叠 */
         height: auto;
+        /* 窄屏放开折行：这里宽度不够，折行比溢出好 */
+        white-space: normal;
     }
     #main_Logo_doc .chinese {
         line-height: 1.3;

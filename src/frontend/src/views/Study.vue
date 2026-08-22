@@ -275,9 +275,19 @@ body {
 .second-all {
     position: relative;
     width: 100%;
-    height: 960px;
-    display: flex;
-    justify-content: center;
+    min-height: 960px;
+    /* 用 grid 让课程列表和课程详情叠在同一个格子里。
+       原来两者都是 position:absolute（为了淡入淡出时不互相顶开），
+       但绝对定位不参与父容器高度计算 —— 容器停在写死的 960px，
+       而课程列表实际有 1006px，溢出的 46px 直接压到了 footer 上。
+       grid 同格叠放既保留交叉淡化，又能让容器按最高的子元素撑开。 */
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-items: start;
+}
+.second-all > * {
+    grid-area: 1 / 1;
 }
 .header {
     height: 50px;
@@ -324,10 +334,11 @@ body {
 .main {
     /* display: none; */
     margin: 50px auto;
-    position: absolute;
+    /* 不再需要 absolute —— 由 .second-all 的 grid 同格叠放来处理 */
+    position: relative;
 }
 .second-main {
-    position: absolute;
+    position: relative;
 }
 .title {
     width: 100%;

@@ -44,6 +44,9 @@
 <style scoped>
 .main {
     height: 700px;
+    /* 三栏垂直居中。原来靠各自不同的 margin-top（50 / 180 / 150）摆位置，
+       两侧卡片高度都是 500px 却错开了 100px，看起来就不齐。 */
+    align-items: center;
     /* background-image: linear-gradient(to left bottom, #6bd17b, #60d696, #5bdbae, #5fdec3, #6ce1d5, #6ae5d9, #68e8dc, #65ece0, #51f1d5, #47f5c5, #4df9b0, #5ffb97); */
     /* background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%); */
     /* background-image: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%); */
@@ -59,14 +62,12 @@
     background-color: aliceblue;
     margin-left: 100px;
     border: 2px solid #fdeac9;
-    margin-top: 50px;
     animation-duration: 2s;
     animation-name: slidein1;
 }
 .main .Box2 {
     width: min(450px, 100%);
     height: 300px;
-    margin-top: 180px;
     animation-duration: 2s;
     animation-name: slidein;
 }
@@ -84,7 +85,6 @@
     height: 500px;
     /* background-color: rgb(138, 202, 218); */
     background-color: aliceblue;
-    margin-top: 150px;
     margin-right: 100px;
     border: 2px solid #fdeac9;
     animation-duration: 2s;
