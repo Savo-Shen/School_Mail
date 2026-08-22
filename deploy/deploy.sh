@@ -46,12 +46,26 @@ echo "==> 生产环境自检"
 "$BACKEND_DIR/.venv/bin/python" manage.py check --deploy --fail-level WARNING
 
 echo "==> 重启服务"
-sudo systemctl restart "$SERVICE"
-sleep 2
-sudo systemctl is-active --quiet "$SERVICE" || {
-  echo "!! 服务未能启动，看日志：journalctl -u $SERVICE -n 50" >&2
-  exit 1
-}
+# 用 sudo -n（非交互）：这台机器的 sudo 需要密码，
+# 装了 /etc/sudoers.d/school-mail 之后这一步才能免密自动完成。
+if sudo -n systemctl restart "$SERVICE" 2>/dev/null; then
+  sleep 2
+  sudo -n systemctl is-active --quiet "$SERVICE" || {
+    echo "!! 服务未能启动，看日志：journalctl -u $SERVICE -n 50" >&2
+    exit 1
+  }
+else
+  echo
+  echo "  !! 无法免密重启服务。代码和依赖都已更新，只差重启这一步。"
+  echo
+  echo "  手动执行： sudo systemctl restart $SERVICE"
+  echo
+  echo "  想让以后全自动，装一个只放行这几条命令的 sudoers 规则："
+  echo "    sudo install -m 440 -o root -g root \\"
+  echo "      $APP_DIR/deploy/sudoers-school-mail /etc/sudoers.d/school-mail"
+  echo
+  exit 2
+fi
 
 echo "==> 健康检查"
 curl -fsS http://127.0.0.1:8000/api/health/ && echo

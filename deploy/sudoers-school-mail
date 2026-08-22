@@ -1,0 +1,14 @@
+# 只放行部署脚本需要的那几条 systemctl 命令，不是完整的 NOPASSWD。
+#
+# 安装（必须用 install 保证权限 440，否则 sudo 拒绝加载该文件）：
+#   sudo install -m 440 -o root -g root \
+#     ~/school_mail/deploy/sudoers-school-mail /etc/sudoers.d/school-mail
+#
+# 安装后校验语法（重要：写坏 sudoers 会导致 sudo 完全不可用）：
+#   sudo visudo -c
+#
+# 装上之后 deploy/deploy.sh 全自动跑完，不再需要手工重启。
+
+savo_shen ALL=(root) NOPASSWD: /usr/bin/systemctl restart school-mail
+savo_shen ALL=(root) NOPASSWD: /usr/bin/systemctl is-active school-mail
+savo_shen ALL=(root) NOPASSWD: /usr/bin/systemctl status school-mail
