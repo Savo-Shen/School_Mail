@@ -419,11 +419,19 @@ curl -so /dev/null -w '%{http_code}\n' https://ideccs.savo-shen.com/login
 
 # 日常发版
 
-**后端**：
+**后端**（两种都行）：
 
 ```bash
+# 方式 A：从本地 rsync 过去并自动部署（推荐 —— 服务器到 GitHub 不稳）
+deploy/rsync-backend.sh
+
+# 方式 B：服务器上 git pull
 ssh savo && cd ~/school_mail && ./deploy/deploy.sh
 ```
+
+服务器到 GitHub 的连接经常出现 `GnuTLS recv error (-110)`，实测要重试
+两三次才通，所以 `deploy.sh` 内置了 3 次重试；仍然失败时会提示改用
+`rsync-backend.sh`。方式 A 还有个好处：改动不用先 push 就能上服务器验证。
 
 脚本依次做：拉代码 → 同步依赖 → 迁移 → 收集静态文件 → 生产自检 → 重启 → 健康检查，
 任何一步失败即中止。

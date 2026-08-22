@@ -14,8 +14,22 @@ SERVICE="school-mail"
 
 cd "$APP_DIR"
 
-echo "==> 拉取最新代码"
-git pull --ff-only
+# 服务器到 GitHub 的连接不稳（常见 GnuTLS recv error，要重试几次才通），
+# 所以支持跳过拉取：从本地 rsync 完代码后用 SKIP_PULL=1 跑本脚本即可。
+if [ "${SKIP_PULL:-0}" = "1" ]; then
+  echo "==> 跳过 git pull（SKIP_PULL=1）"
+elif [ -d .git ]; then
+  echo "==> 拉取最新代码"
+  ok=0
+  for i in 1 2 3; do
+    if git pull --ff-only; then ok=1; break; fi
+    echo "    第 $i 次失败，重试..."; sleep 5
+  done
+  [ "$ok" = "1" ] || { echo "!! git pull 三次都失败。可以改用本地 rsync + SKIP_PULL=1：" >&2
+                       echo "   deploy/rsync-backend.sh" >&2; exit 1; }
+else
+  echo "==> 非 git 仓库，跳过拉取（假定代码已由 rsync 同步）"
+fi
 
 cd "$BACKEND_DIR"
 
