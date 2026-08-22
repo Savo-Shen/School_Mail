@@ -130,19 +130,29 @@ background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.1
 }
 
 #main_login {
-    width: 400px;
+    /* 原来写死 400px + margin-left:200px，在 flex 布局里会被挤压，
+       导致「您好，xxx」折成两行。改成按内容撑开 + gap 控制间距。 */
     height: 40px;
     display: flex;
-    margin-left:200px;
+    align-items: center;
+    gap: 20px;
+    margin-right: 60px;
+    flex-shrink: 0;
 }
 
 #main_login #profile {
-    font-size: 25px;
+    font-size: 20px;
     color: rgb(200, 200, 200);
-    right:100px
+    line-height: 40px;
+    /* 用户名不折行；过长时省略而不是撑破布局 */
+    white-space: nowrap;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #main_login #logout {
+    flex-shrink: 0;
     width: 120px;
     height: 40px;
     border: 1px solid rgb(120, 120, 120);
@@ -160,6 +170,7 @@ background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.1
 }
 
 #main_login #login{
+    flex-shrink: 0;
     width: 100px;
     height: 40px;
     border: 1px solid rgb(200, 200, 200);
@@ -168,7 +179,6 @@ background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.1
     border-radius: 50px;
     font-size: 20px;
     color: #fff;
-    left:20px;
     cursor: pointer;
 }
 

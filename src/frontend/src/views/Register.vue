@@ -66,31 +66,29 @@ function login(){
         <div class="Register_Body">
             <div class="Body_Title">
                 <div class="a1">
-                    <a href="#">登录</a>
+                    <a href="#" @click.prevent="login">登录</a>
                 </div>
                 <div class="a2">
-                    <a href="#">注册</a>
+                    <a href="#" @click.prevent>注册</a>
                 </div>
             </div>
             <div class="Register_Form">
                 <form>
                     <div class="Form_Username">
                         <div class="Logo"></div>
-                        <input type="text" placeholder="注册用户名" name="注册用户名" class="Doc">
-                        <!-- <label for="username">用户名</label>
-                        <input v-model="username" type="text" placeholder="用户名" /> -->
+                        <input v-model="username" @keyup.enter="register" type="text" placeholder="注册用户名" name="注册用户名" class="Doc">
                     </div>
                     <div class="Form_Password">
                         <div class="Logo1"></div>
-                        <input type="password" placeholder="注册密码" name="注册密码" class="Password">
+                        <input v-model="password" @keyup.enter="register" type="password" placeholder="注册密码" name="注册密码" class="Password">
                     </div>
                     <div class="Form_Confirm">
                         <div class="Logo2"></div>
-                        <input type="password" placeholder="确认您的注册密码" name="确认注册密码" class="Confirm">
+                        <input v-model="checkPassword" @keyup.enter="register" type="password" placeholder="确认您的注册密码" name="确认注册密码" class="Confirm">
                     </div>
                     <div class="Form_Email">
                         <div class="Logo3"></div>
-                        <input type="email" placeholder="输入您的邮箱" name="用户邮箱" class="Email">
+                        <input v-model="email" @keyup.enter="register" type="email" placeholder="输入您的邮箱" name="用户邮箱" class="Email">
                     </div>
                     <div class="Form_Bottom">
                         <div class="Bottom_Login">
@@ -104,15 +102,10 @@ function login(){
                         <div class="Bottom_List">
                         </div>
                     </div>
+                    <div v-if="message" class="Form_Message">{{ message }}</div>
                     <div class="Form_End">
                         <div class="Havebeen">
-                            <a href="#">已有账号？</a>
-                        </div>
-                        <div class="Out">
-                            <div class="Out_Logo"></div>
-                            <div class="Out_Doc">
-                                <a href="#">退出登录</a>
-                            </div>
+                            <a href="#" @click.prevent="login">已有账号？去登录</a>
                         </div>
                     </div>
                 </form>
@@ -124,6 +117,15 @@ function login(){
 </template>
 
 <style scoped>
+
+.Form_Message {
+    clear: both;
+    padding: 10px 0 0 24px;
+    font-size: 14px;
+    color: #ff8500;
+    line-height: 1.5;
+}
+
 
 *{
     padding: 0;

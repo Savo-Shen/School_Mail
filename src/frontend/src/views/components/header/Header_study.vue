@@ -1,6 +1,15 @@
 <script setup>
-import { onMounted } from 'vue'
-import router from '@/router'
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+
+import { useAuthStore } from '@/stores/auth.js'
+
+const auth = useAuthStore()
+const router = useRouter()
+
+// 之前这个头部完全没接登录状态，不管登没登录都硬显示「登录」
+const isLogin = computed(() => auth.isAuthenticated)
+const username = computed(() => auth.username)
 
 function openMain() {
     router.push('/')
@@ -10,9 +19,10 @@ function login() {
     router.push('/login')
 }
 
-onMounted(() => {
-
-})
+async function logout() {
+    await auth.logout()
+    router.push('/')
+}
 </script>
 
 <template>
@@ -42,10 +52,16 @@ onMounted(() => {
             </div>
             <!-- Login -->
             <div class="login fr">
-                <a href="javascript:;" @click="login">
+                <a v-if="!isLogin" href="javascript:;" @click="login">
                     <span>
                         <img src="@img/Enter-2登录.png" alt="">
                         登录
+                    </span>
+                </a>
+                <a v-else href="javascript:;" @click="logout" :title="'当前账号：' + username">
+                    <span>
+                        <img src="@img/退出登录.png" alt="">
+                        {{ username }}
                     </span>
                 </a>
                 <div class="top"></div>
@@ -153,9 +169,36 @@ body {
     background-color: #1e1e20;
     /* border-bottom: 1px solid white; */
 }
+/* 这个 header 原本是 float + 负边距 + 魔数宽度堆出来的：
+     .zuoyi   display:block + margin-left:-150px  -> 实测宽 1450px，比容器还宽
+     .nav ul  margin-left:800px                   -> 靠魔数把导航推到右边
+     .login   margin-right:-120px                 -> 顶到容器外
+   合起来在 1280px 视口下横向溢出 140px，且换任何宽度都会散。
+   改成 flex 布局：logo 靠左、导航和登录靠右，不依赖任何魔数。 */
+.header .w {
+    width: 100%;
+    max-width: none;
+    height: 50px;
+    padding: 0 40px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
 .zuoyi {
-    display: block;
-    margin-left: -150px;
+    display: flex;
+    align-items: center;
+    margin-left: 0;
+    flex-shrink: 0;
+}
+.header .nav {
+    /* 占满中间的剩余空间，把自己和后面的登录区推到右侧 */
+    margin-left: auto;
+}
+.header .nav ul {
+    margin-left: 0;
+    display: flex;
+    align-items: center;
 }
 .header a img {
     width: 50px;
@@ -216,7 +259,6 @@ body {
 }
 .login {
     position: relative;
-    margin-right: -120px;
     margin-top: 4px;
     padding: 8px 40px 8px 32px;
     cursor: pointer;

@@ -1,5 +1,16 @@
 @import "./base.css";
 
+/* 本站从不需要横向滚动。
+   入场动画会把元素临时放到视口右侧之外撑出可滚动区域：
+     - animate.css 的 fadeInRight 起始态是 translate3d(100%,0,0)
+     - 学生风采的 Box1/2/3 用 margin-left:100vw 做"从右滑入"
+   实测学生风采页能横向滚 3929px、专业概况页 540px。
+   在根元素裁掉横向溢出即可，动画表现不受影响。 */
+html,
+body {
+  overflow-x: hidden;
+}
+
 #app {
   
   /*取消最大宽度*/
